@@ -1,7 +1,11 @@
-﻿namespace Assets.Scripts.AI
+﻿using UnityEngine;
+
+namespace Assets.Scripts.AI
 {
   public class Knight : FighterAI
   {
+    public Sprite[] deathSprites;
+
     public Knight()
     {
       findRange = 50f;

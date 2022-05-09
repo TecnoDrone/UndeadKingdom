@@ -364,3 +364,7 @@ FodyWeavers.xsd
 /Temp
 /lfs/objects
 /hooks
+
+# Custom
+Library/
+ProjectSettings/

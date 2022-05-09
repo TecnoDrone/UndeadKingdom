@@ -57,12 +57,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Rendering\PixelBoy.cs" />
+    <Compile Include="Assets\Scripts\Spells\Command.cs" />
     <Compile Include="Assets\Scripts\Spells\Fireball.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Spells\CommandTroops.cs" />
+    <Compile Include="Assets\Scripts\Spells\Spell.cs" />
     <Compile Include="Assets\Scripts\Generic\LookAtCamera.cs" />
+    <Compile Include="Assets\Scripts\Zombie.cs" />
     <Compile Include="Assets\Scripts\Entity.cs" />
     <Compile Include="Assets\Scripts\UI\SpellPicker\SpellPicker.cs" />
     <Compile Include="Assets\Scripts\UI\SpellPicker\SpellPickerManager.cs" />
+    <Compile Include="Assets\Scripts\FollowMouse.cs" />
     <Compile Include="Assets\Scripts\AI\Slime.cs" />
     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\AI\FighterAI.cs" />
@@ -70,22 +75,17 @@
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\AI\Skeleton.cs" />
     <Compile Include="Assets\Scripts\PointAtMouse.cs" />
+    <Compile Include="Assets\Scripts\AI\Villager.cs" />
     <Compile Include="Assets\Scripts\AI\Knight.cs" />
     <Compile Include="Assets\Scripts\Graveyard.cs" />
-    <Compile Include="Assets\Scripts\Extentions.cs" />
-    <Compile Include="Assets\Scripts\Spells\SelectTroops.cs" />
-    <Compile Include="Assets\Scripts\Spells\Reanimate.cs" />
-    <Compile Include="Assets\Scripts\Utility.cs" />
-    <Compile Include="Assets\Scripts\Spells\Command.cs" />
-    <Compile Include="Assets\Scripts\Spells\CommandTroops.cs" />
-    <Compile Include="Assets\Scripts\Spells\Spell.cs" />
-    <Compile Include="Assets\Scripts\Zombie.cs" />
-    <Compile Include="Assets\Scripts\FollowMouse.cs" />
-    <Compile Include="Assets\Scripts\AI\Villager.cs" />
     <Compile Include="Assets\Scripts\Generic\StayOnGround.cs" />
     <Compile Include="Assets\Scripts\AI\King.cs" />
+    <Compile Include="Assets\Scripts\Extentions.cs" />
+    <Compile Include="Assets\Scripts\Spells\SelectTroops.cs" />
     <Compile Include="Assets\Scripts\EventManager.cs" />
     <Compile Include="Assets\Scripts\Spellcasting.cs" />
+    <Compile Include="Assets\Scripts\Spells\Reanimate.cs" />
+    <Compile Include="Assets\Scripts\Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Sprites\Kenney-Input-prompts-pixel-16\License.txt" />
@@ -722,9 +722,6 @@
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.PlasticSCM.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
