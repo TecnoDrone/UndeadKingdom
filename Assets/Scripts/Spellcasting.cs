@@ -28,7 +28,7 @@ public class Spellcasting : MonoBehaviour
         spell.name = spellKind;
 
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out var hit))
+        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, 1 << LayerMask.NameToLayer("Ground")))
         {
           spell.GetComponent<Spell>().Destination = hit.point;
         }
