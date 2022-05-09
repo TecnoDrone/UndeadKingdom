@@ -128,7 +128,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 0d253a58675af3b4083dda24610e29eb, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.05
   m_Pitch: 0.5
@@ -240,6 +240,11 @@ MonoBehaviour:
   roamDistance: 0
   target: {fileID: 0}
   sprite: {fileID: 0}
+  deathSprites:
+  - {fileID: 21300000, guid: 8b5a67e7c7040994d926bfac71386f40, type: 3}
+  - {fileID: 21300000, guid: 9f2f938b259bc134d8b1fd75baeb850a, type: 3}
+  - {fileID: 21300000, guid: 593ecd69ddac089438bdce261c7b6c4d, type: 3}
+  - {fileID: 21300000, guid: 30bcf10ce8da07b4c87c40bf4627053a, type: 3}
 --- !u!1 &8339285339924660549
 GameObject:
   m_ObjectHideFlags: 0
