@@ -88,6 +88,8 @@ public class Entity : MonoBehaviour
   //The entity dies and leave NO corpse on the ground
   public List<Transform> Disintegrate()
   {
+    GameManager.DeadEntities.Add(this);
+
     //Play Disintegrate sound
     if (disintegrateSoundEffect != null) AudioSource.PlayClipAtPoint(disintegrateSoundEffect, transform.position, 0.1f);
 

@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
 
   private void LateUpdate()
   {
-
+    //Clear dead entities from targets
     if (FightersTargets.Any())
     {
       var deepCopy = FightersTargets.ToDictionary(x => x.Key, x => x.Value);
@@ -53,6 +53,19 @@ public class GameManager : MonoBehaviour
         {
           skeleton.target = null;
           FightersTargets.Remove(skeleton);
+        }
+      }
+    }
+
+    //Clear dead entities from selected units
+    if (SelectedUnits.Any())
+    {
+      var deepCopy = SelectedUnits.ToDictionary(x => x.Key, x => x.Value);
+      foreach (var (skeleton, target) in deepCopy)
+      {
+        if (DeadEntities.Contains(target))
+        {
+          SelectedUnits.Remove(skeleton);
         }
       }
     }
