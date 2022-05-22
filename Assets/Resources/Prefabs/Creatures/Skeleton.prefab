@@ -205,11 +205,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 654bfdf9c1846804e9eda4ab24a1d1e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  life: 100
+  life: 10
   hurtSoundEffect: {fileID: 8300000, guid: 30dceaf09e8a94543b7cc9774e741691, type: 3}
   spriteRenderer: {fileID: 0}
   findRange: 5
-  Damage: 5
+  Damage: 1
   attackRange: 1
   attackSpeed: 1
   whatIsEnemy:
