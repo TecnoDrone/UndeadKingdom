@@ -235,7 +235,7 @@ MonoBehaviour:
   attackSpeed: 1
   whatIsEnemy:
     serializedVersion: 2
-    m_Bits: 576
+    m_Bits: 64
   state: 0
   roamDistance: 0
   target: {fileID: 0}

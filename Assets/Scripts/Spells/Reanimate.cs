@@ -40,8 +40,8 @@ public class Reanimate : Spell, ISpell
     //Turn nearby corpses into zombies
     foreach (var corpe in corpses)
     {
-      var summon = Instantiate(Resources.Load<GameObject>("Prefabs/Creatures/Skeleton"));
-      summon.transform.position = corpe.transform.position;
+      var summon = Instantiate(Resources.Load<GameObject>("Prefabs/Creatures/Skeleton"), corpe.transform.position, Quaternion.Euler(60, 0, 0));
+      //summon.transform.position = corpe.transform.position;
       summon.name = "Skeleton";
 
       Player.controlledMinions.Add(summon.GetComponent<Skeleton>());
