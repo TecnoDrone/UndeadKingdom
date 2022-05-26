@@ -229,13 +229,13 @@ MonoBehaviour:
   life: 10
   hurtSoundEffect: {fileID: 8300000, guid: 3226e87b6d853ed44919c44eeca80a15, type: 3}
   spriteRenderer: {fileID: 0}
-  findRange: 5
+  findRange: 2
   Damage: 1
   attackRange: 1
   attackSpeed: 1
   whatIsEnemy:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 576
   state: 0
   roamDistance: 0
   target: {fileID: 0}
