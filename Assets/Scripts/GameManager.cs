@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 {
   public static HashSet<Entity> DeadEntities = new HashSet<Entity>();
 
-  public static Dictionary<FighterAI, Entity> FightersTargets = new Dictionary<FighterAI, Entity>();
+  public static Dictionary<EntityAI, Entity> FightersTargets = new Dictionary<EntityAI, Entity>();
   public static Dictionary<int, Skeleton> SelectedUnits = new Dictionary<int, Skeleton>();
 
   public static Dictionary<string, GameObject> CachedSpells = new Dictionary<string, GameObject>();

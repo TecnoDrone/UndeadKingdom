@@ -2,15 +2,14 @@
 
 namespace Assets.Scripts.AI
 {
-  public class Knight : FighterAI
+  public class Knight : CombatAI
   {
     public Sprite[] deathSprites;
 
     public Knight()
     {
-      findRange = 50f;
       attackRange = 1f;
-      roamDistance = 3f;
+      viewDistance = 3f;
       attackSpeed = 1f;
     }
 

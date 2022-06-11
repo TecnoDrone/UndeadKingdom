@@ -2,76 +2,35 @@
 
 namespace Assets.Scripts.AI
 {
-  public class Villager : Entity
+  public class Villager : FleeAI
   {
-    public bool showRoam;
-    public float roamDistance = 3f;
-    public float speed = 1f;
-    public State state;
+    public Sprite[] deathSprites;
 
-    private Rigidbody rig;
-    private Vector3 roamingPosition;
-    private Vector3 startingPosition;
-    private GameObject corpse;
-
-    public override void Start()
+    public override void OnDeath()
     {
-      base.Start();
-      corpse = Resources.Load<GameObject>("Prefabs/Corpse");
-      rig = GetComponent<Rigidbody>();
-      startingPosition = rig.worldCenterOfMass.ZeroY();
-      roamingPosition = GetRoamingPosition();
-      state = State.Roam;
-    }
+      var randomRotation = Random.Range(0f, 360f);
 
-    public override void Update()
-    {
-      base.Update();
+      var corpse = new GameObject();
+      corpse.layer = LayerMask.NameToLayer("Corpse");
+      corpse.transform.rotation = Quaternion.Euler(90f, 0f, randomRotation);
+      corpse.transform.position = new Vector3(
+        transform.position.x,
+        transform.position.y + 0.05f,
+        transform.position.z);
 
-      switch (state)
-      {
-        case State.Roam: Roam(); break;
-      }
-    }
+      var rand = Random.Range(0, deathSprites.Length - 1);
+      var randomSprite = deathSprites[rand];
+      var spriteRenderer = corpse.AddComponent<SpriteRenderer>();
+      spriteRenderer.sprite = randomSprite;
 
-    public void Roam() 
-    {
-      if (roamDistance > 0)
-      {
-        if (Vector3.Distance(rig.worldCenterOfMass.ZeroY(), roamingPosition) < 0.1f) roamingPosition = GetRoamingPosition();
+      var rig = corpse.AddComponent<Rigidbody>();
+      rig.useGravity = false;
 
-        WalkTo(roamingPosition);
-      }
-    }
-
-    private Vector3 GetRoamingPosition()
-    {
-      return startingPosition + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized * roamDistance;
-    }
-
-    private void WalkTo(Vector3 destination)
-    {
-      var heading = destination - rig.worldCenterOfMass;
-      var direction = heading / heading.magnitude;
-
-      rig.MovePosition(rig.position + direction * speed * Time.deltaTime);
-    }
-
-    public override void Death()
-    {
-      base.Death();
-
-      var rand = Random.Range(0, 360f);
-      Instantiate(corpse, rig.worldCenterOfMass.ZeroY(0.01f), Quaternion.Euler(new Vector3(90, 0, rand)));
-    }
-
-    public void OnDrawGizmos()
-    {
-      if (showRoam)
-      {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(startingPosition.ZeroY(), roamDistance);
-      }
+      var collider = corpse.AddComponent<BoxCollider>();
+      collider.isTrigger = true;
+      collider.center = new Vector3(0f, 0.5f, 0f);
+      collider.size = new Vector3(1f, 1f, 0.2f);
     }
   }
+
 }

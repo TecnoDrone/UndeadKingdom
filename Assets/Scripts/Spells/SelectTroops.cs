@@ -85,6 +85,7 @@ public class SelectTroops : Spell
 
     foreach (var unit in selectableUnits)
     {
+      if (unit == null) continue;
       var inBounds = selectionBounds.Contains(Camera.main.WorldToViewportPoint(unit.transform.position));
 
       if (inBounds)

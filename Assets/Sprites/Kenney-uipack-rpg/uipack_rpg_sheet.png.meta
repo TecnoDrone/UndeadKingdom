@@ -290,6 +290,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -2193,6 +2194,94 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      buttonRound_beige.png: -2258374320120644838
+      buttonSquare_brown.png: 8047949451544522013
+      barBack_horizontalMid.png: 4110012939401715177
+      buttonSquare_grey_pressed.png: 2823825819002273684
+      buttonLong_brown_pressed.png: -4104176793228889392
+      barRed_verticalBottom.png: 2810553331800553670
+      buttonLong_blue.png: -3985811117541366512
+      barYellow_horizontalLeft.png: 1917657991484293299
+      cursorGauntlet_blue.png: -5591692054918224611
+      cursorSword_silver.png: -5733998262458994484
+      buttonLong_grey.png: -8169026919483231335
+      iconCircle_beige.png: 6820754018416556629
+      arrowSilver_left.png: 7640529539919425555
+      barBlue_verticalBottom.png: 7109168866638171205
+      cursorHand_beige.png: 2933387467584884181
+      barBlue_verticalMid.png: 8349698072535737256
+      barBack_verticalMid.png: -7091332126032253562
+      iconCross_beige.png: -4626611290844866245
+      barGreen_verticalBottom.png: 1834998612420506070
+      iconCircle_grey.png: 7524690137840758341
+      barGreen_horizontalRight.png: -6034670552469499588
+      barGreen_verticalMid.png: -2755453101209018879
+      barRed_horizontalMid.png: -3369414919916728018
+      cursorSword_bronze.png: -1281719886287688372
+      barBack_horizontalRight.png: 936862776637027205
+      barRed_horizontalRight.png: 6188094661579950931
+      buttonLong_grey_pressed.png: 8512830025971384357
+      barYellow_horizontalMid.png: 645092453454402935
+      iconCheck_bronze.png: 3522341663598534631
+      buttonSquare_beige.png: 7067577018730115286
+      panelInset_blue.png: -8297243822185179047
+      panel_blue.png: -6789483784463679010
+      arrowBlue_right.png: 91069135266465237
+      panelInset_beige.png: 923997641766589172
+      barGreen_horizontalLeft.png: -3344875544598875602
+      buttonRound_grey.png: -2051775029143062000
+      cursorGauntlet_grey.png: 3548154222282398596
+      iconCross_grey.png: 611582470095337371
+      panel_beigeLight.png: -1954158942528770799
+      buttonSquare_blue_pressed.png: 3879586902925579997
+      iconCheck_blue.png: -8561850954222213945
+      barGreen_verticalTop.png: -4213352910743148662
+      iconCircle_blue.png: 2919071832950625210
+      barYellow_verticalMid.png: -5355005803999219697
+      barYellow_horizontalRight.png: -5766303750328084760
+      barYellow_verticalTop.png: 3239843093637664104
+      buttonSquare_grey.png: 2329619694263455062
+      iconCheck_beige.png: 7215279896600887633
+      arrowBrown_right.png: -7707906182408999357
+      iconCircle_brown.png: 9017043938630672815
+      buttonLong_blue_pressed.png: 8992257282699874409
+      arrowSilver_right.png: -440148442306511084
+      barBlue_verticalTop.png: -7780427158427965587
+      buttonSquare_blue.png: -2735075395936164667
+      barRed_verticalMid.png: 8461753039342037233
+      arrowBeige_left.png: -3065845115110258923
+      cursorHand_grey.png: 543474438185336381
+      barBack_verticalTop.png: 7186829677185908364
+      panel_brown.png: -1871147257634247708
+      panelInset_brown.png: -8644997448959572577
+      iconCross_blue.png: -1245058833516092737
+      buttonRound_brown.png: -8635304914333653394
+      cursorHand_blue.png: 8801855715008105287
+      barYellow_verticalBottom.png: -5605363782295744499
+      buttonLong_beige.png: 7825250829889082930
+      barBack_horizontalLeft.png: 5741791383268150795
+      barBack_verticalBottom.png: -1569847276214523418
+      iconCheck_grey.png: -5216927348275734057
+      arrowBeige_right.png: -876916113671692908
+      barGreen_horizontalMid.png: -7904214316921149014
+      buttonLong_brown.png: -861143203771653310
+      barBlue_horizontalBlue.png: 733584220257985254
+      barRed_horizontalLeft.png: -5977699597387766232
+      cursorGauntlet_bronze.png: 1135579071110884410
+      barBlue_horizontalRight.png: 5218899492203918591
+      buttonLong_beige_pressed.png: 8253030867335237739
+      panel_beige.png: 1695822802525721143
+      arrowBlue_left.png: -3199050045481761375
+      cursorSword_gold.png: -113328550142869694
+      buttonSquare_beige_pressed.png: 4497485657247042444
+      buttonRound_blue.png: -6625052740406624021
+      barBlue_horizontalLeft.png: 2879881502684800515
+      arrowBrown_left.png: -243706425301756804
+      buttonSquare_brown_pressed.png: 5437299029774813188
+      panelInset_beigeLight.png: -5794796869342371381
+      iconCross_brown.png: 6831320113791551198
+      barRed_verticalTop.png: -3308328016718208261
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

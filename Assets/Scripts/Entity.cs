@@ -36,6 +36,8 @@ public class Entity : MonoBehaviour
     defaultPitch = audioSource.pitch;
 
     originalColor = spriteRenderer.material.color;
+
+    if (life == 0) Death();
   }
 
   public virtual void Update()
@@ -81,9 +83,7 @@ public class Entity : MonoBehaviour
     OnDeath();
   }
 
-  public virtual void OnDeath()
-  {
-  }
+  public virtual void OnDeath() { }
 
   //The entity dies and leave NO corpse on the ground
   public List<Transform> Disintegrate()

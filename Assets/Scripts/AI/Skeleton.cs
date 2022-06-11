@@ -1,13 +1,12 @@
 ﻿using Assets.Scripts.AI;
 
-public class Skeleton : FighterAI
+public class Skeleton : CombatAI
 {
   public Skeleton()
   {
     Damage = 1;
-    findRange = 50f;
     attackRange = 10f;
-    roamDistance = 3f;
+    viewDistance = 3f;
     attackSpeed = 1f;
   }
 }

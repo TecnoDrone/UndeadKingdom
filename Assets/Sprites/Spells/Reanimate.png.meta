@@ -45,6 +45,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -270,6 +271,14 @@ TextureImporter:
     secondaryTextures:
     - texture: {fileID: 2800000, guid: 33c4b29612b911443a3be571ea9fac1d, type: 3}
       name: _Emission
+    nameFileIdTable:
+      Reanimate_1: 381344067451671915
+      Reanimate_2: -8746205141013194113
+      Reanimate_5: -1503779094740797849
+      Reanimate_6: 5490673954034498642
+      Reanimate_4: 9145689910840054298
+      Reanimate_0: -8895311643709547567
+      Reanimate_3: 2263888396798787345
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
