@@ -23,6 +23,7 @@ public class SpellPickerManager : MonoBehaviour
 
     CombatSlots = new List<Slot>
     {
+      new Slot(KeyCode.Mouse0, (Sprite)IconsTilemap[85], "Consume"),
       new Slot(KeyCode.Mouse0, (Sprite)IconsTilemap[77], "Fireball"),
       new Slot(KeyCode.Mouse1, (Sprite)IconsTilemap[78], "Reanimate"),
     };

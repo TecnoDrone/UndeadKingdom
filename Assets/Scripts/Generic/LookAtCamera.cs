@@ -1,10 +1,17 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
 
-public class LookAtCamera : MonoBehaviour
+namespace Assets.Scripts.Generic
 {
-  private void Update()
+  public class LookAtCamera : MonoBehaviour
   {
-    transform.rotation = Quaternion.Euler(new Vector3(60f, 0f, transform.rotation.z));
-    //transform.LookAt(Camera.main.transform, Vector3.up);
+    private void LateUpdate()
+    {
+      transform.forward = Camera.main.transform.forward;
+    }
   }
 }

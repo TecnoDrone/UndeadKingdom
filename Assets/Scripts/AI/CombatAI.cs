@@ -8,6 +8,8 @@ namespace Assets.Scripts.AI
     public int Damage = 1;
     public float attackRange = 10f;
     public float attackSpeed = 1f;
+    public Squads squad;
+    public int order = 0;
 
     private float lastAttackTime;
 
@@ -24,7 +26,7 @@ namespace Assets.Scripts.AI
       switch (state)
       {
         case State.Chase: Chase(); break;
-        case State.Attack: Attack(); break;
+        case State.Fight: Fight(); break;
       }
     }
 
@@ -33,52 +35,57 @@ namespace Assets.Scripts.AI
       var distance = Vector3.Distance(rig.worldCenterOfMass, target.transform.position);
       if (distance < attackRange)
       {
-        state = State.Attack;
+        state = State.Fight;
         return;
       }
 
-      WalkTo(target.transform.position);
-      //if (distance < findRange)
-      //{
-      //  WalkTo(target.transform.position);
-      //  return;
-      //}
+      //WalkTo(target.transform.position);
+      if (distance < viewDistance)
+      {
+        WalkTo(target.transform.position);
+        return;
+      }
 
-      //if (distance >= findRange)
-      //else
-      //{
-      //  target = null;
-      //  state = State.Roam;
-      //  return;
-      //}
+      if (distance >= viewDistance)
+      {
+        target = null;
+        state = State.Roam;
+        return;
+      }
     }
 
-    private void Attack()
+    private void Fight()
     {
       //I've have someone to attack
       if (target != null)
       {
+        //stop to attack
+        agent.isStopped = true;
+
+        //Check if target is still in attack range
         var hits = Physics.OverlapSphere(rig.worldCenterOfMass, attackRange, whatIsEnemy);
         var hit = hits.FirstOrDefault(e => e.transform.parent.gameObject.GetInstanceID() == target.gameObject.GetInstanceID());
 
-        //enemy in range, attack!
-        if (hit != null && Time.time > attackSpeed + lastAttackTime)
-        {
-          target.TakeDamage(Damage);
-          lastAttackTime = Time.time;
-
-          if (target.life <= 0)
-          {
-            target = null;
-            state = State.Roam;
-          }
-
-        }
-
-        //Too far, chase him!
-        else
+        //If not, chase him.
+        if (hit == null)
         {
           state = State.Chase;
+          agent.isStopped = false;
+        }
+        else
+        {
+          //enemy in range, attack!
+          if (Time.time > attackSpeed + lastAttackTime)
+          {
+            Attack();
+
+            if (target.life <= 0)
+            {
+              ResetToDefaultState();
+            }
+
+            lastAttackTime = Time.time;
+          }
         }
       }
 
@@ -86,7 +93,13 @@ namespace Assets.Scripts.AI
       else
       {
         state = State.Roam;
+        agent.isStopped = false;
       }
+    }
+
+    public virtual void Attack()
+    {
+      target.TakeDamage(Damage);
     }
   }
 }

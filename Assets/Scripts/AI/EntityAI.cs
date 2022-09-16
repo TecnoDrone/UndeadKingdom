@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Assets.Scripts.Managers;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,10 +11,12 @@ namespace Assets.Scripts.AI
     public LayerMask whatIsEnemy;
     public State state;
 
-    public float viewDistance = 3f;
-    public float roamDistance = 3f;
-    public Vector3? roamingPosition;
+    public CreatureKind Kind;
 
+    public float viewDistance = 3f;
+    public float roamDistance = 0f;
+
+    public Vector3? roamingPosition;
     private Vector3 anchorPosition;
 
     [HideInInspector]
@@ -29,6 +32,8 @@ namespace Assets.Scripts.AI
     //Used to prevent SetPosition multiple times
     protected bool isWalking;
 
+    //Starting speed, taken from NavMeshAgent
+    public float originalSpeed;
     public override void Start()
     {
       base.Start();
@@ -41,6 +46,7 @@ namespace Assets.Scripts.AI
       state = State.Roam;
       anchorPosition = transform.position;
       roamingPosition = GetNextPosition(viewDistance);
+      originalSpeed = agent.speed;
     }
 
     // Update is called once per frame
@@ -59,19 +65,15 @@ namespace Assets.Scripts.AI
       }
     }
 
+    public override void OnDeath()
+    {
+      var corspe = CorpseManager.GetRandomCorspe(Kind);
+      Instantiate(corspe, transform.position, corspe.transform.rotation);
+    }
+
     protected virtual void Roam()
     {
-      //if (roamingPosition != null)
-      //{
-      //  if (Vector3.Distance(rig.worldCenterOfMass.ZeroY(), roamingPosition.Value) < 0.5f)
-      //  {
-      //    roamingPosition = GetRoamingPosition();
-      //  }
-
-      //  WalkTo(roamingPosition);
-      //}
-
-      //FindTarget();
+      FindTarget();
 
       if (roamDistance > 0 && roamingPosition != null)
       {
@@ -98,9 +100,19 @@ namespace Assets.Scripts.AI
       }
     }
 
-    public void WalkTo(Vector3? destination)
+    public void WalkTo(Vector3? destination, float? movSpeed = null)
     {
       if (destination == null) return;
+
+      if (movSpeed.HasValue)
+      {
+        agent.speed = movSpeed.Value;
+      }
+      else
+      {
+        agent.speed = originalSpeed;
+      }
+
       agent.SetDestination(destination.Value);
     }
 
@@ -143,10 +155,20 @@ namespace Assets.Scripts.AI
     }
 
     //Reset to default state
-    protected virtual void ResetToDefaultState()
+    public virtual void ResetToDefaultState()
     {
-      agent.SetDestination(transform.position);
-      anchorPosition = transform.position;
+      if (agent != null)
+      {
+        agent.ResetPath();
+        agent.isStopped = false;
+        agent.speed = originalSpeed;
+      }
+
+      if (transform != null)
+      {
+        anchorPosition = transform.position;
+      }
+
       isWalking = false;
       state = State.Roam;
     }
@@ -162,7 +184,7 @@ namespace Assets.Scripts.AI
     {
       Roam,
       Chase,
-      Attack,
+      Fight,
       Flee
     }
 
@@ -175,13 +197,5 @@ namespace Assets.Scripts.AI
         Gizmos.DrawSphere(roamingPosition.Value, 0.1f);
       }
     }
-
-    //public void OnDrawGizmos()
-    //{
-    //  if (roamingPosition.HasValue)
-    //  {
-    //    Gizmos.DrawSphere(roamingPosition.Value, 0.1f);
-    //  }
-    //}
   }
 }

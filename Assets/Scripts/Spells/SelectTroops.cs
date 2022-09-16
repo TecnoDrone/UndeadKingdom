@@ -1,4 +1,6 @@
 using Assets.Scripts;
+using Assets.Scripts.AI;
+using Assets.Scripts.Managers;
 using UnityEngine;
 
 /***********************************************************************
@@ -81,7 +83,7 @@ public class SelectTroops : Spell
   private void SelectUnitsInDraggingBox()
   {
     var selectionBounds = GetViewportBounds(DragStartPosition, Input.mousePosition);
-    var selectableUnits = Player.controlledMinions;
+    var selectableUnits = Player.ControlledMinions;
 
     foreach (var unit in selectableUnits)
     {
@@ -99,36 +101,50 @@ public class SelectTroops : Spell
     }
   }
 
-  private void Select(Skeleton skeleton)
+  private void Select(CombatAI skeleton)
   {
+    if (skeleton == null) return;
+
     int id = skeleton.GetInstanceID();
-
     if (GameManager.SelectedUnits.ContainsKey(id)) return;
-
     GameManager.SelectedUnits.Add(id, skeleton);
 
-    skeleton.transform.Find("Selection").gameObject.SetActive(true);
+    var selection = skeleton.transform.Find("Selection");
+    if (selection != null)
+    {
+      selection.gameObject.SetActive(true);
+    }
   }
 
   private void DeselectAll()
   {
     foreach (var skeleton in GameManager.SelectedUnits.Values)
     {
-      skeleton.transform.Find("Selection").gameObject.SetActive(false);
+      if (skeleton == null) continue;
+
+      var selection = skeleton.transform.Find("Selection");
+      if (selection != null)
+      {
+        selection.gameObject.SetActive(false);
+      }
     }
 
     GameManager.SelectedUnits.Clear();
   }
 
-  private void Deselect(Skeleton skeleton)
+  private void Deselect(CombatAI skeleton)
   {
+    if (skeleton == null) return;
+
     int id = skeleton.GetInstanceID();
-
     if (!GameManager.SelectedUnits.ContainsKey(id)) return;
-
     GameManager.SelectedUnits.Remove(id);
 
-    skeleton.transform.Find("Selection").gameObject.SetActive(false);
+    var selection = skeleton.transform.Find("Selection");
+    if (selection != null)
+    {
+      selection.gameObject.SetActive(false);
+    }
   }
 
   private Bounds GetViewportBounds(Vector3 screenPosition1, Vector3 screenPosition2)

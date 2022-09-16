@@ -95,7 +95,7 @@ namespace Assets.Scripts.AI
       }
     }
 
-    protected override void ResetToDefaultState()
+    public override void ResetToDefaultState()
     {
       base.ResetToDefaultState();
       fleePosition = null;

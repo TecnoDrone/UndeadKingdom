@@ -15,7 +15,6 @@ namespace Assets.Scripts.UI.SpellPicker
     public Sprite spellSlotSprite;
 
     private readonly float spacing = 10;
-    private readonly float size = 50;
 
     public void Start()
     {
@@ -39,7 +38,7 @@ namespace Assets.Scripts.UI.SpellPicker
 
       var spellSlotImage = spellSlotUI.AddComponent<Image>();
       spellSlotImage.sprite = spellSlotSprite;
-      spellSlotImage.rectTransform.sizeDelta = new Vector2(size, size);
+      spellSlotImage.rectTransform.sizeDelta = new Vector2(73, 73);
 
       //Spell ICON
       var spellUI = new GameObject();
@@ -51,13 +50,13 @@ namespace Assets.Scripts.UI.SpellPicker
       var sprite = GetSpellSprite(spell);
       if (sprite != null) spellImage.sprite = sprite;
 
-      spellImage.rectTransform.sizeDelta = new Vector2(size, size);
+      spellImage.rectTransform.sizeDelta = new Vector2(64, 64);
 
       var spellIconUI = new GameObject();
       spellIconUI.transform.parent = spellSlotUI.transform;
       spellIconUI.name = key.ToString();
       spellIconUI.transform.localScale = new Vector3(.3f, .3f, 1);
-      spellIconUI.transform.localPosition = new Vector3(0, size, 0);
+      spellIconUI.transform.localPosition = new Vector3(0, 64, 0);
 
       var mouseImage = spellIconUI.AddComponent<Image>();
       mouseImage.sprite = keyIcon;
@@ -72,13 +71,13 @@ namespace Assets.Scripts.UI.SpellPicker
     {
       if (!UIelemets?.Any() == null) return;
 
-      var totalWidth = UIelemets.Count * size;
-      var start = -(totalWidth / 2) + (size / 2);
+      var totalWidth = UIelemets.Count * 73;
+      var start = -(totalWidth / 2) + (73 / 2);
       var offset = 0f;
 
-      for (int i = 0; i < UIelemets.Count; i++, offset += size + spacing)
+      for (int i = 0; i < UIelemets.Count; i++, offset += 73 + spacing)
       {
-        UIelemets[i].transform.localPosition = new Vector3(start + offset, size / 2 + 10f, 0);
+        UIelemets[i].transform.localPosition = new Vector3(start + offset, 73 / 2 + 70f, 0);
       }
     }
 

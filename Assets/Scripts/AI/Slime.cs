@@ -93,7 +93,7 @@ namespace Assets.Scripts.AI
 
     private void FindTarget()
     {
-      if (Vector3.Distance(transform.position, Player.Instance.GetPosition()) <= findRange)
+      if (Vector3.Distance(transform.position, Player.Instance.transform.position) <= findRange)
       {
         target = Player.Instance.gameObject;
         state = State.Chase;

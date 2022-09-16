@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts;
+using Assets.Scripts.AI;
 using Extentions;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,18 +36,20 @@ public class Reanimate : Spell, ISpell
     spriteRenderer.material.SetColor("_Color", color);
     spriteRenderer.material.SetColor("_EmissionColor", emissionColor.Intesify(intensity));
 
-    var corpses = Physics.OverlapSphere(transform.position, reanimationRange, target);
+    var hits = Physics.OverlapSphere(transform.position, reanimationRange, target);
 
     //Turn nearby corpses into zombies
-    foreach (var corpe in corpses)
+    foreach (var hit in hits)
     {
-      var summon = Instantiate(Resources.Load<GameObject>("Prefabs/Creatures/Skeleton"), corpe.transform.position, Quaternion.Euler(60, 0, 0));
-      //summon.transform.position = corpe.transform.position;
-      summon.name = "Skeleton";
+      //Generate undead
+      var corpse = hit.GetComponent<Corpse>();
+      var undead = Instantiate(corpse.Reanimation, hit.transform.position, corpse.Reanimation.transform.rotation);
 
-      Player.controlledMinions.Add(summon.GetComponent<Skeleton>());
+      //Set undead under player control
+      Player.ControlledMinions.Add(undead.GetComponent<CombatAI>());
 
-      Destroy(corpe.gameObject);
+      //Destroy corpse
+      Destroy(hit.gameObject);
     }
   }
 

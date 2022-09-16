@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts.AI;
+using Assets.Scripts.Generic;
+using Assets.Scripts.Managers;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -6,28 +9,21 @@ namespace Assets.Scripts
 {
   public class Player : Entity
   {
-    public float fireRate;
-
     public static Player Instance { get; private set; }
 
-    public static List<Skeleton> controlledMinions = new List<Skeleton>();
-    public static Stance stance = Stance.Combat;
+    public static List<CombatAI> ControlledMinions;
+    public static Stance stance;
+    public float fireRate;
+    public int energy;
+    public int maxEnergy;
 
     [HideInInspector]
-    public static AudioListener audio;
-
+    public static AudioListener listener;
     private Spellcasting spellCasting;
 
-    public override void Start()
+    public void Awake()
     {
-      base.Start();
-      Instance = this;
-
-      controlledMinions = FindObjectsOfType<Skeleton>()?.ToList();
-
-      spellCasting = gameObject.AddComponent<Spellcasting>();
-      audio = gameObject.GetComponent<AudioListener>();
-      spellCasting.fireRate = fireRate;
+      Init();
     }
 
     public override void Update()
@@ -49,6 +45,11 @@ namespace Assets.Scripts
           {
             spellCasting.Cast("Reanimate");
           }
+
+          if (Input.GetKeyDown(KeyCode.Q))
+          {
+            spellCasting.Cast("Consume");
+          }
         }
 
         if (stance == Stance.Tactical)
@@ -66,9 +67,49 @@ namespace Assets.Scripts
       }
     }
 
-    public Vector3 GetPosition()
+    public override void TakeDamage(int dmg)
     {
-      return Instance.transform.position;
+      base.TakeDamage(dmg);
+      HealthBar.Instance.RemoveHealth(dmg);
+    }
+
+    public void AddEnergy(int amount)
+    {
+      if (amount < 0) return;
+      if (energy >= maxEnergy) return;
+
+      energy = Mathf.Clamp(energy + amount, 0, maxEnergy);
+      EnergyBar.Instance.AddEnergy(amount);
+    }
+
+    public void UseEnergy(int amount)
+    {
+      if (amount < 0) return;
+      if (energy == 0) return;
+
+      energy = Mathf.Clamp(energy - amount, 0, maxEnergy);
+      EnergyBar.Instance.RemoveEnergy(amount);
+    }
+
+    public override void Death()
+    {
+      base.Death();
+      Camera.main.transform.SetParent(null);
+    }
+
+    private void Init()
+    {
+      Instance = this;
+
+      ControlledMinions = new List<CombatAI>();
+      stance = Stance.Combat;
+
+      ControlledMinions = FindObjectsOfType<CombatAI>()?.ToList();
+
+      listener = gameObject.GetComponent<AudioListener>();
+
+      spellCasting = gameObject.AddComponent<Spellcasting>();
+      spellCasting.fireRate = fireRate;
     }
 
     private void SwapState()

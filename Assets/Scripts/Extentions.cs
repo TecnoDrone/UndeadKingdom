@@ -49,7 +49,7 @@ namespace Extentions
     {
       key = tuple.Key;
       value = tuple.Value;
-    } 
+    }
   }
 
   public static class ColorExtentions 

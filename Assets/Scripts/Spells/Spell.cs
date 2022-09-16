@@ -8,6 +8,7 @@ using UnityEngine;
  * *********************************************************************/
 public abstract class Spell : MonoBehaviour, ISpell
 {
+  public int EnergyCost;
   public string Name => GetType().Name;
 
   [HideInInspector]
