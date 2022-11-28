@@ -1,4 +1,5 @@
 using Assets.Scripts.AI;
+using Assets.Scripts.Player;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,6 +7,12 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Managers
 {
+  public enum GameState
+  {
+    Running,
+    Paused
+  }
+
   public class GameManager : MonoBehaviour
   {
     public static HashSet<Entity> DeadEntities = new HashSet<Entity>();
@@ -14,13 +21,17 @@ namespace Assets.Scripts.Managers
     public static Dictionary<int, CombatAI> SelectedUnits = new Dictionary<int, CombatAI>();
 
     public static GameState gameState = GameState.Running;
+
+    public Texture2D combatCursor;
+    public Texture2D commandCursor;
     public GameObject WinScreen;
     public GameObject Menu;
 
-    public enum GameState
+    private void Start()
     {
-      Running,
-      Paused
+      PlayerEntity.onPlayerStateChange += ChangeCursor;
+
+      Cursor.SetCursor(combatCursor, new Vector2(combatCursor.width / 2, combatCursor.height / 2), CursorMode.Auto);
     }
 
     private void Update()
@@ -87,6 +98,18 @@ namespace Assets.Scripts.Managers
       DeadEntities.Clear();
     }
 
+    public void ChangeCursor()
+    {
+      if(PlayerEntity.Instance.State == PlayerState.Combat)
+      {
+        Cursor.SetCursor(combatCursor, new Vector2(combatCursor.width / 2, combatCursor.height / 2), CursorMode.Auto);
+      }
+      else if(PlayerEntity.Instance.State == PlayerState.Command)
+      {
+        Cursor.SetCursor(commandCursor, Vector2.zero, CursorMode.Auto);
+      }
+    }
+
     public void WinGame()
     {
       PauseGame();
@@ -97,7 +120,7 @@ namespace Assets.Scripts.Managers
     {
       Time.timeScale = 0;
       gameState = GameState.Paused;
-      Player.listener.enabled = false;
+      PlayerEntity.listener.enabled = false;
     }
 
     public void QuitGame()
@@ -118,7 +141,7 @@ namespace Assets.Scripts.Managers
     {
       Time.timeScale = 1;
       gameState = GameState.Running;
-      Player.listener.enabled = true;
+      PlayerEntity.listener.enabled = true;
     }
   }
 }

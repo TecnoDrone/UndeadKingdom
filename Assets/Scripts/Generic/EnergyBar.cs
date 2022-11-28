@@ -15,8 +15,8 @@ namespace Assets.Scripts.Generic
     {
       Instance = this;
       slider = GetComponent<Slider>();
-      MaxEnergy = Player.Instance.maxEnergy;
-      Energy = Player.Instance.energy;
+      //MaxEnergy = PlayerEntity.Instance.maxEnergy;
+      //Energy = PlayerEntity.Instance.energy;
 
       slider.minValue = 0;
       slider.maxValue = MaxEnergy;

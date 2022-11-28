@@ -406,17 +406,19 @@ MonoBehaviour:
     m_Bits: 4096
   whatIsEnemy:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   state: 0
   Kind: 1
   viewDistance: 5
   roamDistance: 0
   target: {fileID: 0}
   sprite: {fileID: 0}
+  originalSpeed: 0
   Damage: 1
   attackRange: 1
   attackSpeed: 1
   squad: 0
+  order: 1
 --- !u!1 &8339285339924660549
 GameObject:
   m_ObjectHideFlags: 0

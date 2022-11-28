@@ -9,7 +9,7 @@ namespace Assets.Scripts.AI
     public bool showRoam = false;
     public bool showFind = false;
 
-    public State state;
+    public AIstate state;
     public float roamDistance = 3f;
     public float speed = 1f;
     public float attackRange = 10f;
@@ -34,7 +34,7 @@ namespace Assets.Scripts.AI
     public override void Start()
     {
       base.Start();
-      state = State.Roam;
+      state = AIstate.Roam;
       startingPosition = transform.position.ZeroY();
       roamingPosition = GetRoamingPosition();
     }
@@ -44,9 +44,9 @@ namespace Assets.Scripts.AI
       base.Update();
       switch (state)
       {
-        case State.Roam: Roam(roamingPosition); break;
-        case State.Chase: Chase(target); break;
-        case State.Attack: Attack(target); break;
+        case AIstate.Roam: Roam(roamingPosition); break;
+        case AIstate.Chase: Chase(target); break;
+        case AIstate.Attack: Attack(target); break;
       }
     }
 
@@ -68,12 +68,12 @@ namespace Assets.Scripts.AI
 
       if (distance < attackRange)
       {
-        state = State.Attack;
+        state = AIstate.Attack;
       }
       else if (distance >= findRange)
       {
         target = null;
-        state = State.Roam;
+        state = AIstate.Roam;
       }
       else
       {
@@ -87,16 +87,16 @@ namespace Assets.Scripts.AI
 
       if (Vector3.Distance(transform.position, target.transform.position) > attackRange)
       {
-        state = State.Roam;
+        state = AIstate.Roam;
       }
     }
 
     private void FindTarget()
     {
-      if (Vector3.Distance(transform.position, Player.Instance.transform.position) <= findRange)
+      if (Vector3.Distance(transform.position, PlayerEntity.Instance.transform.position) <= findRange)
       {
-        target = Player.Instance.gameObject;
-        state = State.Chase;
+        target = PlayerEntity.Instance.gameObject;
+        state = AIstate.Chase;
       }
     }
 
@@ -154,7 +154,7 @@ namespace Assets.Scripts.AI
     }
   }
 
-  public enum State
+  public enum AIstate
   {
     Roam,
     Chase,

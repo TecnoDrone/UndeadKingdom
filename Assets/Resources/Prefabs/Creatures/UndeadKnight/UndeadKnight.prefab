@@ -291,7 +291,7 @@ MonoBehaviour:
     m_Bits: 4096
   whatIsEnemy:
     serializedVersion: 2
-    m_Bits: 57344
+    m_Bits: 8192
   state: 0
   Kind: 3
   viewDistance: 10

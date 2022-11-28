@@ -11,15 +11,13 @@ namespace Assets.Scripts.Generic
 
     private float Health;
     private float MaxHealth;
-    private float DamagedThreshold;
 
     public void Start()
     {
       Instance = this;
       slider = GetComponent<Slider>();
-      MaxHealth = Player.Instance.life;
+      MaxHealth = PlayerEntity.Instance.life;
       Health = MaxHealth;
-      DamagedThreshold = MaxHealth * 0.3f; //30%
 
       slider.minValue = 0;
       slider.maxValue = MaxHealth;
@@ -33,7 +31,6 @@ namespace Assets.Scripts.Generic
 
       Health = Mathf.Clamp(Health + health, 0, MaxHealth);
       slider.value = Health;
-      UpdateDamaged();
     }
 
     public void RemoveHealth(float health)
@@ -43,18 +40,6 @@ namespace Assets.Scripts.Generic
 
       Health = Mathf.Clamp(Health - health, 0, MaxHealth);
       slider.value = Health;
-      UpdateDamaged();
-    }
-
-    public void UpdateDamaged()
-    {
-      if (Health > DamagedThreshold) return;
-
-      var color = damaged.color;
-
-      color.a = 1 - Health / DamagedThreshold;
-
-      damaged.color = color;
     }
   }
 }

@@ -24,8 +24,9 @@ namespace Assets.Scripts.AI
       shootingPosition = new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z);
 
       var direction = target.transform.position - shootingPosition;
-      var arrow = Instantiate(Arrow, shootingPosition, Quaternion.LookRotation(-transform.up, direction)).GetComponent<Arrow>();
-      arrow.SetSquad(squad);
+      Instantiate(Arrow, shootingPosition, Quaternion.LookRotation(-transform.up, direction))
+        .GetComponent<Projectile>()
+        .SetSquad(squad);
     }
   }
 }

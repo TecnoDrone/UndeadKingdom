@@ -7,6 +7,7 @@ public class Entity : MonoBehaviour
 {
   //Alive variables
   public int life = 10;
+  public int maxLife = 10;
 
   [HideInInspector]
   public bool IsDead => life <= 0;
