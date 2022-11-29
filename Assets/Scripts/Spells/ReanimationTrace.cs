@@ -15,10 +15,15 @@ namespace Assets.Scripts.Spells.Projectile
     private GameObject Target;
     public void SetTarget(GameObject target) => Target = target;
 
-    public void Launch()
+    public void Start()
     {
       var audioSource = GetComponent<AudioSource>();
       audioSource.pitch = Random.Range(0.9f, 1.1f);
+      transform.rotation = Quaternion.LookRotation(-transform.right);
+    }
+
+    public void Launch()
+    {
       if (Target == null)
       {
         Destroy(gameObject);
@@ -51,12 +56,12 @@ namespace Assets.Scripts.Spells.Projectile
       var time = 0.0f;
       while (time < upwardTime)
       {
-        transform.Translate(transform.up * movementSpeed);
+        transform.Translate(transform.forward * movementSpeed * Time.deltaTime, Space.Self);
         time += Time.deltaTime;
         yield return null;
       }
 
-      StartCoroutine(HomeIn());
+      //StartCoroutine(HomeIn());
     }
 
     IEnumerator HomeIn()
@@ -65,7 +70,7 @@ namespace Assets.Scripts.Spells.Projectile
       {
         Vector3 targetDirection = Target.transform.position - transform.position;
         Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, rotationSpeed * Time.deltaTime, 0.0F);
-        transform.Translate(transform.forward * movementSpeed, Space.World);
+        transform.Translate(transform.forward * movementSpeed * Time.deltaTime);
         transform.rotation = Quaternion.LookRotation(newDirection);
         yield return null;
       }
