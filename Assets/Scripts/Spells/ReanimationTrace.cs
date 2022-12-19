@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.AI;
+using Extentions;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -15,11 +16,18 @@ namespace Assets.Scripts.Spells.Projectile
     private GameObject Target;
     public void SetTarget(GameObject target) => Target = target;
 
+    Coroutine MoveUpwardCoroutine;
+    Coroutine HomeInCoroutine;
+
+    private ParticleSystem particleSystem;
+
     public void Start()
     {
       var audioSource = GetComponent<AudioSource>();
       audioSource.pitch = Random.Range(0.9f, 1.1f);
-      transform.rotation = Quaternion.LookRotation(-transform.right);
+      audioSource.PlayClipAtPoint(transform.position);
+
+      particleSystem = GetComponent<ParticleSystem>();
     }
 
     public void Launch()
@@ -31,7 +39,7 @@ namespace Assets.Scripts.Spells.Projectile
       }
 
       Destroy(gameObject, 10);
-      StartCoroutine(MoveUpward());
+      MoveUpwardCoroutine = StartCoroutine(MoveUpward());
     }
 
     public void OnTriggerEnter(Collider other)
@@ -48,7 +56,22 @@ namespace Assets.Scripts.Spells.Projectile
       //Destroy corpse
       Destroy(other.gameObject);
 
-      Destroy(gameObject);
+      //Destroy trace
+      //Destroy(gameObject);
+
+      if (MoveUpwardCoroutine != null) StopCoroutine(MoveUpwardCoroutine);
+      if (HomeInCoroutine != null) StopCoroutine(HomeInCoroutine);
+      particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+      StartCoroutine(QueueDestruction());
+    }
+
+    IEnumerator QueueDestruction()
+    {
+      while(true)
+      {
+        if (particleSystem.particleCount == 0) Destroy(gameObject);
+        yield return null;
+      }
     }
 
     IEnumerator MoveUpward()
@@ -56,12 +79,12 @@ namespace Assets.Scripts.Spells.Projectile
       var time = 0.0f;
       while (time < upwardTime)
       {
-        transform.Translate(transform.forward * movementSpeed * Time.deltaTime, Space.Self);
+        transform.Translate(Vector3.forward * movementSpeed * Time.deltaTime);
         time += Time.deltaTime;
         yield return null;
       }
 
-      //StartCoroutine(HomeIn());
+      HomeInCoroutine = StartCoroutine(HomeIn());
     }
 
     IEnumerator HomeIn()
@@ -70,8 +93,9 @@ namespace Assets.Scripts.Spells.Projectile
       {
         Vector3 targetDirection = Target.transform.position - transform.position;
         Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, rotationSpeed * Time.deltaTime, 0.0F);
-        transform.Translate(transform.forward * movementSpeed * Time.deltaTime);
+        transform.Translate(Vector3.forward * movementSpeed * Time.deltaTime);
         transform.rotation = Quaternion.LookRotation(newDirection);
+        rotationSpeed += 0.1f;
         yield return null;
       }
     }

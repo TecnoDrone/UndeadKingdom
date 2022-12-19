@@ -29,7 +29,7 @@ namespace Assets.Scripts.Managers
 
     private void Start()
     {
-      PlayerEntity.onPlayerStateChange += ChangeCursor;
+      PlayerEntity.onPlayerStanceChange += ChangeCursor;
 
       Cursor.SetCursor(combatCursor, new Vector2(combatCursor.width / 2, combatCursor.height / 2), CursorMode.Auto);
     }
@@ -100,11 +100,11 @@ namespace Assets.Scripts.Managers
 
     public void ChangeCursor()
     {
-      if(PlayerEntity.Instance.State == PlayerState.Combat)
+      if(PlayerEntity.Instance.Stance == PlayerStance.Combat)
       {
         Cursor.SetCursor(combatCursor, new Vector2(combatCursor.width / 2, combatCursor.height / 2), CursorMode.Auto);
       }
-      else if(PlayerEntity.Instance.State == PlayerState.Command)
+      else if(PlayerEntity.Instance.Stance == PlayerStance.Command)
       {
         Cursor.SetCursor(commandCursor, Vector2.zero, CursorMode.Auto);
       }

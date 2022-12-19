@@ -34,26 +34,6 @@ namespace Assets.Scripts.Spells
       spriteRenderer.material.SetColor("_Color", color);
       spriteRenderer.material.SetColor("_EmissionColor", emissionColor.Intesify(intensity));
 
-      //if (!TryFindNearbyCorpses(out var corpses))
-      //{
-      //  Destroy(gameObject);
-      //  return;
-      //}
-
-      //Turn nearby corpses into zombies
-      //foreach (var corpseObject in corpses)
-      //{
-      //  //Generate undead
-      //  var corpseBehavior = corpseObject.GetComponent<Corpse>();
-      //  var undead = Instantiate(corpseBehavior.Reanimation, corpseObject.transform.position, corpseBehavior.Reanimation.transform.rotation);
-      //
-      //  //Set undead under player control
-      //  PlayerEntity.ControlledMinions.Add(undead.GetComponent<CombatAI>());
-      //
-      //  //Destroy corpse
-      //  Destroy(corpseObject.gameObject);
-      //}
-
       transform.rotation = Quaternion.Euler(new Vector3(90f, 0f, 0f));
       transform.position = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
     }
@@ -64,14 +44,6 @@ namespace Assets.Scripts.Spells
 
       if (startFading) FadeOut();
     }
-
-    //public override bool CanCast() => TryFindNearbyCorpses(out Collider[] _);
-
-    //private bool TryFindNearbyCorpses(out Collider[] corpses)
-    //{
-    //  corpses = Physics.OverlapSphere(transform.position, range, target);
-    //  return corpses != null && corpses.Any();
-    //}
 
     private void FadeOut()
     {
@@ -88,7 +60,7 @@ namespace Assets.Scripts.Spells
         particleColor.colorMax = particleColor.colorMax.ReduceAlpha(0.1f);
         colorOverLifetime.color = particleColor;
 
-        if (spriteRenderer.material.GetFloat("_Opacity") <= 0) Destroy(gameObject);
+        //if (spriteRenderer.material.GetFloat("_Opacity") <= 0) Destroy(gameObject);
 
         lastFadeTime += 0.2f;
       }

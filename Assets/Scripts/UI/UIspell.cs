@@ -33,7 +33,7 @@ namespace Assets.Scripts.UI
       CheckCost(default);
       CheckState();
 
-      PlayerEntity.onPlayerStateChange += CheckState;
+      PlayerEntity.onPlayerStanceChange += CheckState;
       PlayerEntity.onPlayerLifeGained += CheckCost;
       PlayerEntity.onPlayerLifeConsumed += CheckCost;
     }
@@ -68,7 +68,7 @@ namespace Assets.Scripts.UI
 
     private void CheckState()
     {
-      if (PlayerEntity.Instance.State == spellContainer.state)
+      if (PlayerEntity.Instance.Stance == spellContainer.state)
       {
         isSameState = true;
       }

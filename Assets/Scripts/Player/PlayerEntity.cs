@@ -15,9 +15,12 @@ namespace Assets.Scripts
     [HideInInspector]
     public static AudioListener listener;
 
-    public PlayerState State;
+    public PlayerStance Stance;
+    public delegate void OnPlayerStanceChange();
+    public static OnPlayerStanceChange onPlayerStanceChange;
 
-    public delegate void OnPlayerStateChange();
+    public PlayerState State;
+    public delegate void OnPlayerStateChange(PlayerState state);
     public static OnPlayerStateChange onPlayerStateChange;
 
     public delegate void OnPlayerLifeConsumed(int amount);
@@ -34,17 +37,17 @@ namespace Assets.Scripts
 
       if (Input.GetKeyUp(KeyCode.LeftShift))
       {
-        if (State == PlayerState.Combat)
+        if (Stance == PlayerStance.Combat)
         {
-          State = PlayerState.Command;
+          Stance = PlayerStance.Command;
         }
 
-        else if (State == PlayerState.Command)
+        else if (Stance == PlayerStance.Command)
         {
-          State = PlayerState.Combat;
+          Stance = PlayerStance.Combat;
         }
 
-        onPlayerStateChange?.Invoke();
+        onPlayerStanceChange?.Invoke();
       }
     }
 

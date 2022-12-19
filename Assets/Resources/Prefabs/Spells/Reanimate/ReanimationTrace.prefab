@@ -29,14 +29,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5888182323596660807}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -13.95, y: 0.87, z: -8.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &5888182323596660825
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -4856,7 +4856,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 52841e9477fb3b342aa349a1a950a0d2, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.05
   m_Pitch: 1
   Loop: 0
@@ -4953,6 +4953,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79c7c3afa5f1aa74f9491498e83ce80f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upwardTime: 0.5
-  movementSpeed: 10
-  rotationSpeed: 360
+  upwardTime: 0.1
+  movementSpeed: 15
+  rotationSpeed: 5

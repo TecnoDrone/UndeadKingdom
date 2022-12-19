@@ -22,7 +22,7 @@ TagManager:
   - GoodOnes
   - King
   - Villager
-  - Leaves
+  - Tree
   - 
   - 
   - 
@@ -39,6 +39,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 2149555165
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

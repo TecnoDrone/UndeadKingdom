@@ -25,7 +25,7 @@ public class Entity : MonoBehaviour
 
   [HideInInspector]
   public SpriteRenderer spriteRenderer;
-  private AudioSource audioSource;
+  protected AudioSource audioSource;
   private float defaultPitch;
 
   public virtual void Start()

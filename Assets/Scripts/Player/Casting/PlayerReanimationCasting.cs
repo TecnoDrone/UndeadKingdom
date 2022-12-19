@@ -11,11 +11,8 @@ namespace Assets.Scripts.Player.Casting
     {
       if (Input.GetKeyUp(key))
       {
-        if (State == SpellCastingState.Ready)
-        {
-          TryCast();
-        }
+        if (State == SpellCastingState.Ready) TryCast();
       }
-     }
+    }
   }
 }

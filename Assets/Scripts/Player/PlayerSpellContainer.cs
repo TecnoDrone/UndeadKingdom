@@ -6,7 +6,7 @@ namespace Assets.Scripts.Player
   {
     public SpellObject spellObject;
     public KeyCode key;
-    public PlayerState state;
+    public PlayerStance state;
 
     private float activeTime;
     private float cooldownTime;
@@ -21,7 +21,7 @@ namespace Assets.Scripts.Player
         case SpellStates.Ready:
           if (Input.GetKeyDown(key))
           {
-            if (PlayerEntity.Instance.State != state) return;
+            if (PlayerEntity.Instance.Stance != state) return;
             if (PlayerEntity.Instance.life <= spellObject.Cost) return;
 
             if(spellObject.TryCast(gameObject))

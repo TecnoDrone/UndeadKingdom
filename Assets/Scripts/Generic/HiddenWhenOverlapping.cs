@@ -1,16 +1,17 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
   public class HiddenWhenOverlapping : MonoBehaviour
   {
-    private SpriteRenderer spriteRenderer;
+    private List<SpriteRenderer> spriteRenderers = new List<SpriteRenderer>();
     private SpriteMask spriteMask;
 
     private void Start()
     {
-      spriteRenderer = GetComponent<SpriteRenderer>();
-      spriteMask = GetComponent<SpriteMask>();
+      spriteRenderers.AddRange(GetComponentsInChildren<SpriteRenderer>());
+      spriteMask = GetComponentInChildren<SpriteMask>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -25,13 +26,20 @@ namespace Assets.Scripts
 
     private void Hide()
     {
-      spriteRenderer.material.SetFloat("_Opacity", 0.2f);
+      foreach(var spriteRenderer in spriteRenderers)
+      {
+        spriteRenderer.material.SetFloat("_Opacity", 0.3f);
+      }
+      
       spriteMask.enabled = false;
     }
 
     private void UnHide()
     {
-      spriteRenderer.material.SetFloat("_Opacity", 1f);
+      foreach (var spriteRenderer in spriteRenderers)
+      {
+        spriteRenderer.material.SetFloat("_Opacity", 1f);
+      }
       spriteMask.enabled = true;
     }
   }

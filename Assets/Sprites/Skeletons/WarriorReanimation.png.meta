@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 17ec613a7ec79da40bbc5fda74b3865b
+guid: abd220a1fa82eb948a3e859f428a3785
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -36,8 +36,8 @@ TextureImporter:
     filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
+    wrapU: 1
+    wrapV: 1
     wrapW: 0
   nPOTScale: 0
   lightmap: 0
@@ -45,8 +45,8 @@ TextureImporter:
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 7
-  spritePivot: {x: 0.5, y: 0}
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -104,7 +104,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Consume_Animation_0
+      name: WarriorReanimation_0
       rect:
         serializedVersion: 2
         x: 0
@@ -118,14 +118,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ee7d17637ce530843bc896d886645b53
-      internalID: 95056318
+      spriteID: 638cf4a12c736a64fbc8c3392cea19e5
+      internalID: 173729301
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Consume_Animation_1
+      name: WarriorReanimation_1
       rect:
         serializedVersion: 2
         x: 16
@@ -139,14 +139,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e0c70a05c0fdf04478edbf53a4448cd6
-      internalID: 334231483
+      spriteID: 82c97549e7c57ef498d5f538de7ce3a0
+      internalID: -304690586
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Consume_Animation_2
+      name: WarriorReanimation_2
       rect:
         serializedVersion: 2
         x: 32
@@ -160,14 +160,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 40e6d12600162a34c8b93c42fcf5b676
-      internalID: 71342023
+      spriteID: 99e7ac92a4521614f9e6f412abc3fe31
+      internalID: 2041981078
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Consume_Animation_3
+      name: WarriorReanimation_3
       rect:
         serializedVersion: 2
         x: 48
@@ -181,14 +181,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 021b5997c70b6b748b95256bfc5b1dac
-      internalID: 1701169739
+      spriteID: 26bc5fa036a08ac468e956a73bf95708
+      internalID: 1603315412
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Consume_Animation_4
+      name: WarriorReanimation_4
       rect:
         serializedVersion: 2
         x: 64
@@ -202,8 +202,155 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 52c6b362905ef5943ad2133920cd9df0
-      internalID: 1176142957
+      spriteID: b31600959470295438d55d03b44fd25a
+      internalID: 639408594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorReanimation_5
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 290b819e6366a724db2c53df7a9d8c93
+      internalID: -347859974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorReanimation_6
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac1322398391b1c448572477fb5d7452
+      internalID: -384713087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorReanimation_7
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 0
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15dee3d6d8716294cb33a1bf83027a77
+      internalID: -1751509692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorReanimation_8
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b548b7207d8ff34419461b9bafd82d58
+      internalID: 1304861727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorReanimation_9
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 0
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f183a4c6f86ae6488a25cd26b5502ba
+      internalID: 2051886640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorReanimation_10
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 0
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12ae6763e9cad834e9c6f92e3a640abf
+      internalID: 2038754646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WarriorReanimation_11
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 0
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1528fe67bb3ab940a301b5fcb722275
+      internalID: 266815348
       vertices: []
       indices: 
       edges: []
@@ -212,18 +359,25 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Consume_Animation_3: 1701169739
-      Consume_Animation_1: 334231483
-      Consume_Animation_2: 71342023
-      Consume_Animation_4: 1176142957
-      Consume_Animation_0: 95056318
+      WarriorReanimation_7: -1751509692
+      WarriorReanimation_8: 1304861727
+      WarriorReanimation_0: 173729301
+      WarriorReanimation_5: -347859974
+      WarriorReanimation_10: 2038754646
+      WarriorReanimation_2: 2041981078
+      WarriorReanimation_1: -304690586
+      WarriorReanimation_6: -384713087
+      WarriorReanimation_4: 639408594
+      WarriorReanimation_3: 1603315412
+      WarriorReanimation_11: 266815348
+      WarriorReanimation_9: 2051886640
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

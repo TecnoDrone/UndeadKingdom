@@ -1,8 +1,14 @@
 ﻿namespace Assets.Scripts.Player
 {
-  public enum PlayerState
+  public enum PlayerStance
   {
     Combat,
     Command
+  }
+
+  public enum PlayerState
+  {
+    Idle,
+    Casting
   }
 }
