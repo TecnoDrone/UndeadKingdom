@@ -6,7 +6,7 @@ namespace Assets.Scripts.Utilities.ResponsabilityChain
   {
     IChaneinableHanlder<T> SetNext(IChaneinableHanlder<T> chainedHandler);
 
-    void Handle(T request);
+    void Handle(string spell, float value);
   }
 
   public abstract class ChainedHandler<T> : MonoBehaviour, IChaneinableHanlder<T>
@@ -19,20 +19,20 @@ namespace Assets.Scripts.Utilities.ResponsabilityChain
       return this.nextChainedHandler;
     }
 
-    public void Handle(T request)
+    public void Handle(string spell, float value)
     {
-      if (CanHandle(request))
+      if (CanHandle(spell))
       {
-        Process(request);
+        Cooldown(value);
       }
       else
       {
-        nextChainedHandler.Handle(request);
+        nextChainedHandler.Handle(spell, value);
       }
     }
 
-    protected abstract bool CanHandle(T request);
+    public abstract bool CanHandle(string spell);
 
-    protected abstract void Process(T request);
+    public abstract void Cooldown(float value);
   }
 }

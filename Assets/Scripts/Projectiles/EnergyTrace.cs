@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Projectiles
 {
@@ -12,6 +14,8 @@ namespace Assets.Scripts.Projectiles
 
     private ParticleSystem particleSystem;
     private AudioSource audioSource;
+
+    public event EventHandler OnHitHandler;
 
     public void Start()
     {
@@ -42,6 +46,7 @@ namespace Assets.Scripts.Projectiles
       {
         PlayerEntity.Instance.GainLife(energy);
         particleSystem.Stop();
+        OnHitHandler?.Invoke(this, null);
         Destroy(GetComponent<SphereCollider>());
       }
     }

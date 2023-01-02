@@ -13,21 +13,17 @@ namespace Assets.Scripts.UI
     public Slider slider;
     public TextMeshProUGUI timer;
 
-    [HideInInspector]
-    public PlayerSpellContainer spellContainer;
+    public SpellKind spellKind;
+    public PlayerStance spellStance;
+    public string spellName;
+    public int spellCost;
 
     private bool isSameState = true;
     private bool isCostTooHigh = false;
 
     private void Start()
     {
-      if(spellContainer.spellObject == null)
-      {
-        Destroy(gameObject);
-        return;
-      }
-
-      var spellIcon = Resources.Load<Sprite>($"UI/{spellContainer.spellObject.name}");
+      var spellIcon = Resources.Load<Sprite>($"UI/{spellName}");
       transform.Find("Icon").GetComponent<Image>().sprite = spellIcon;
 
       CheckCost(default);
@@ -68,7 +64,7 @@ namespace Assets.Scripts.UI
 
     private void CheckState()
     {
-      if (PlayerEntity.Instance.Stance == spellContainer.state)
+      if (PlayerEntity.Instance.Stance == spellStance)
       {
         isSameState = true;
       }
@@ -82,7 +78,7 @@ namespace Assets.Scripts.UI
 
     private void CheckCost(int amount)
     {
-      if (PlayerEntity.Instance.life - spellContainer.spellObject.Cost <= 0)
+      if (PlayerEntity.Instance.life - spellCost <= 0)
       {
         isCostTooHigh = true;
       }
@@ -106,16 +102,16 @@ namespace Assets.Scripts.UI
       }
     }
 
-    protected override bool CanHandle(SpellObject spellObject)
+    public override bool CanHandle(string spell)
     {
-      if (spellObject.spellKind != spellContainer.spellObject.spellKind) return false;
+      if (spell!= spellKind.ToString()) return false;
 
       else return true;
     }
 
-    protected override void Process(SpellObject spellObject)
+    public override void Cooldown(float cooldown)
     {
-      StartCoroutine(CooldownAnimation(spellObject.CooldownTime));
+      StartCoroutine(CooldownAnimation(cooldown));
     }
   }
 }

@@ -77,7 +77,11 @@ namespace Extentions
       source.clip = clip ?? audioSource.clip;
       source.pitch = pitch ?? audioSource.pitch;
       source.volume = volume ?? audioSource.volume;
+      source.spatialBlend = audioSource.spatialBlend;
+      source.maxDistance = audioSource.maxDistance;
+      source.rolloffMode = audioSource.rolloffMode;
       source.Play();
+
       UnityEngine.Object.Destroy(go, clip?.length ?? audioSource.clip.length);
     }
   }

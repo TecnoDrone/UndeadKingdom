@@ -165,7 +165,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2005112205}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: -0.25}
+  m_LocalPosition: {x: 0, y: 0.25, z: -0.055}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -391,13 +391,13 @@ GameObject:
   - component: {fileID: 3020972507611773723}
   - component: {fileID: 4624354123887900688}
   - component: {fileID: 239989276}
-  - component: {fileID: 1331411355}
-  - component: {fileID: 1252239238}
-  - component: {fileID: 7220569385697069131}
   - component: {fileID: 5059015477422539343}
   - component: {fileID: 756253584410373256}
   - component: {fileID: 1331411367}
+  - component: {fileID: 4299821418118819446}
   - component: {fileID: 517900917}
+  - component: {fileID: 1030365060}
+  - component: {fileID: 1030365049}
   m_Layer: 9
   m_Name: Player Summoner
   m_TagString: Player
@@ -563,51 +563,6 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   Stance: 0
   State: 0
---- !u!114 &1331411355
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4624354123887900690}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6df0fede3701ce043a04c8a53669c876, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spellObject: {fileID: 0}
-  key: 323
-  state: 0
---- !u!114 &1252239238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4624354123887900690}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6df0fede3701ce043a04c8a53669c876, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spellObject: {fileID: 0}
-  key: 114
-  state: 0
---- !u!114 &7220569385697069131
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4624354123887900690}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6df0fede3701ce043a04c8a53669c876, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spellObject: {fileID: 0}
-  key: 324
-  state: 0
 --- !u!114 &5059015477422539343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -651,14 +606,35 @@ MonoBehaviour:
   target:
     serializedVersion: 2
     m_Bits: 128
-  reanimationRange: 10
+  reanimationRange: 5
   timeBetweenReanimations: 0.1
   cooldownTime: 3
   ReanimateObject: {fileID: 6501270491679712554, guid: b19c36a6c538ade45a90be8a065aafec,
     type: 3}
   ReanimationTrace: {fileID: 5888182323596660807, guid: b00e3c15639d7394c8b7a581c06b500a,
     type: 3}
+  stance: 0
   key: 114
+--- !u!114 &4299821418118819446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4624354123887900690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8609a1009a293fa409b982d46e31cef7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  State: 0
+  energyTrace: {fileID: 6874439206155601427, guid: 3ff863573130a4347a54b733c09b07a2,
+    type: 3}
+  damage: 1
+  timeBetweenCasts: 0.2
+  cooldownTime: 0.5
+  stance: 0
+  key: 324
 --- !u!195 &517900917
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -681,6 +657,126 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!120 &1030365060
+LineRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4624354123887900690}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 0
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Positions: []
+  m_Parameters:
+    serializedVersion: 3
+    widthMultiplier: 0.1
+    widthCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    colorGradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 0, b: 0, a: 1}
+      key1: {r: 1, g: 0, b: 0, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 386
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+    numCornerVertices: 0
+    numCapVertices: 0
+    alignment: 0
+    textureMode: 0
+    shadowBias: 0.5
+    generateLightingData: 0
+  m_UseWorldSpace: 0
+  m_Loop: 0
+--- !u!114 &1030365049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4624354123887900690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f3b1c2571afe774a8fc19bb1006580d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  State: 0
+  darkFireBall: {fileID: 8974272071701136713, guid: 98bae6bad3593d24cacd5f9403163e23,
+    type: 3}
+  aimCircle: {fileID: 4839639410712339358, guid: 3a88c677d4b02f1428b53c0869227c10,
+    type: 3}
+  energyCost: 0
+  damage: 0
+  cooldownTime: 0
+  step: 0.05
+  stance: 0
+  key: 323
 --- !u!1 &5625358496782506011
 GameObject:
   m_ObjectHideFlags: 0

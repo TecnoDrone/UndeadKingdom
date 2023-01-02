@@ -13,48 +13,71 @@ namespace Assets.Scripts.Managers.UI
 
     private List<UIspell> uiSpells = new();
 
+    public delegate void OnSpellCooldown(string spell, float cooldown);
+    public static OnSpellCooldown onSpellCooldown;
+
+
     private void Start()
     {
       CreateSpellSlots();
       CreateChain();
 
-      PlayerSpellContainer.onSpellCooldown += ChainHandleCooldown;
+      onSpellCooldown += ChainHandleCooldown;
     }
 
     private void CreateSpellSlots()
     {
-      var playerSpellContainsers = PlayerEntity.Instance.GetComponents<PlayerSpellContainer>().ToList();
+      //var playerSpellContainsers = PlayerEntity.Instance.GetComponents<PlayerSpellContainer>().ToList();
+      var playerSpellsAmount = 3;
 
       var width = 96;
       var inputs = GUI.Find("Inputs");
-      var offsetX = -width * (playerSpellContainsers.Count / 2);
+      var resource = Resources.Load<GameObject>($"UI/SpellSlot");
 
-      for (int i = 0; i < playerSpellContainsers.Count; i++)
-      {
-        var x = offsetX + (i * 96);
+      var offsetX = -width * (playerSpellsAmount / 2);
 
-        var resource = Resources.Load<GameObject>($"UI/SpellSlot");
+      /*** Reanimate ***/
+      var reanimateSpellSlot = Instantiate(resource, inputs, true);
+      reanimateSpellSlot.transform.localPosition = new Vector3(offsetX + 96 * 0, 48);
+      var reanimateUI = reanimateSpellSlot.GetComponent<UIspell>();
+      reanimateUI.spellKind = SpellKind.Reanimate;
+      reanimateUI.spellName = "Reanimate";
+      reanimateUI.spellStance = PlayerStance.Combat;
+      reanimateUI.spellCost = 0;
+      uiSpells.Add(reanimateUI);
 
-        var spellSlot = Instantiate(resource, inputs, true);
-        spellSlot.transform.localPosition = new Vector3(x, 48);
+      /*** Consume ***/
+      var consumeSpellSlot = Instantiate(resource, inputs, true);
+      consumeSpellSlot.transform.localPosition = new Vector3(offsetX + 96 * 1, 48);
+      var consumeUI = consumeSpellSlot.GetComponent<UIspell>();
+      consumeUI.spellKind = SpellKind.Consume;
+      consumeUI.spellName = "Consume";
+      consumeUI.spellStance = PlayerStance.Combat;
+      consumeUI.spellCost = -1;
+      uiSpells.Add(consumeUI);
 
-        var uiSpell = spellSlot.GetComponent<UIspell>();
-        uiSpell.spellContainer = playerSpellContainsers[i];
-        uiSpells.Add(uiSpell);
-      }
+      /*** DarkHail ***/
+      var darkHailSpellSlot = Instantiate(resource, inputs, true);
+      darkHailSpellSlot.transform.localPosition = new Vector3(offsetX + 96 * 2, 48);
+      var darkHailUI = darkHailSpellSlot.GetComponent<UIspell>();
+      darkHailUI.spellKind = SpellKind.DarkHail;
+      darkHailUI.spellName = "DarkHail";
+      darkHailUI.spellStance = PlayerStance.Combat;
+      darkHailUI.spellCost = 1;
+      uiSpells.Add(darkHailUI);
     }
 
     private void CreateChain()
     {
-      for(int i = 0; i < uiSpells.Count - 1; i++)
+      for (int i = 0; i < uiSpells.Count - 1; i++)
       {
         uiSpells[i].SetNext(uiSpells[i + 1]);
       }
     }
 
-    public void ChainHandleCooldown(SpellObject spell)
+    public void ChainHandleCooldown(string spell, float cooldown)
     {
-      uiSpells.First().Handle(spell);
+      uiSpells.First().Handle(spell, cooldown);
     }
   }
 }

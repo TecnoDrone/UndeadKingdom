@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static Assets.Scripts.Managers.UI.UImanager;
 
 namespace Assets.Scripts.SpellCasting
 {
@@ -24,6 +25,7 @@ namespace Assets.Scripts.SpellCasting
     private List<GameObject> Corpses;
 
     private Animator animator;
+    private Coroutine buildup;
 
     void Start()
     {
@@ -33,15 +35,15 @@ namespace Assets.Scripts.SpellCasting
 
     protected bool TryCast()
     {
+      if (buildup != null) return false;
+
       //controlla se ci sono cadaveri nel raggio
       var foundCorpses = Physics.OverlapSphere(transform.position, reanimationRange, target);
       if (foundCorpses == null || !foundCorpses.Any()) return false;
 
       Corpses = foundCorpses.Select(c => c.gameObject).ToList();
 
-      PlayerEntity.Instance.State = PlayerState.Casting; //Add a reference to the caster as a public variable...
-      PlayerEntity.onPlayerStateChange.Invoke(PlayerState.Casting);
-      StartCoroutine(Buildup());
+      buildup = StartCoroutine(Buildup());
       return true;
     }
 
@@ -65,7 +67,10 @@ namespace Assets.Scripts.SpellCasting
 
     IEnumerator Channeling()
     {
+      StopCoroutine(buildup);
+      buildup = null;
       State = SpellCastingState.Channeling;
+
       var reanimate = Instantiate(ReanimateObject, transform.position, default);
       foreach (var corpse in Corpses)
       {
@@ -79,8 +84,6 @@ namespace Assets.Scripts.SpellCasting
 
       //Reset spell
       Corpses.Clear();
-      State = SpellCastingState.Cooldown;
-      StartCoroutine(Cooldown());
 
       //Close animation
       var ps = reanimate.GetComponent<ParticleSystem>();
@@ -93,13 +96,18 @@ namespace Assets.Scripts.SpellCasting
         {
           PlayerEntity.Instance.State = PlayerState.Idle;
           PlayerEntity.onPlayerStateChange.Invoke(PlayerState.Idle);
+          break;
         }
         yield return null;
       }
+
+      StartCoroutine(Cooldown());
     }
 
     IEnumerator Cooldown()
     {
+      State = SpellCastingState.Cooldown;
+      onSpellCooldown.Invoke("Reanimate", cooldownTime);
       yield return new WaitForSeconds(cooldownTime);
       State = SpellCastingState.Ready;
     }
