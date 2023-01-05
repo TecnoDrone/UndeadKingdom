@@ -14,7 +14,6 @@ namespace Assets.Scripts.SpellCasting
     public GameObject aimCircle;
 
     public int energyCost;
-    public int damage;
     public float cooldownTime;
     public float radius;
 
@@ -108,6 +107,8 @@ namespace Assets.Scripts.SpellCasting
 
         Destroy(aimDarkHail);
         aimDarkHail = null;
+
+        lr.positionCount = 0;
 
         StartCoroutine(Cooldown());
       }

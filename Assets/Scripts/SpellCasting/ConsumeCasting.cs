@@ -2,7 +2,6 @@
 using Assets.Scripts.Projectiles;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static Assets.Scripts.Managers.UI.UImanager;
 
@@ -28,6 +27,8 @@ namespace Assets.Scripts.SpellCasting
     public delegate void OnEnergyTraceConsumed();
     public OnEnergyTraceConsumed onEnergyTraceConsumed;
 
+    public event EventHandler OnTraceSpawnedHandler;
+
     protected bool TryCast()
     {
       var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -45,36 +46,38 @@ namespace Assets.Scripts.SpellCasting
 
       while (!forceStop)
       {
-        Target.TakeDamage(damage);
+        //consume life from target
+        Target.TakeDamage(damage); 
+
+        //Generate a new trace
         var go = Instantiate(energyTrace, Target.transform.position, transform.rotation);
         go.TryGetComponent<EnergyTrace>(out var script);
-        script.energy = damage;
-        energyTraces++;
 
-        script.OnHitHandler += new EventHandler(OnTraceHit);
+        //Specify some parameters on the trace
+        script.energy = damage; //amount healed
+        energyTraces++; //update trace count spawned
+        OnTraceSpawnedHandler?.Invoke(this, null); //allow to listen on trace spawn
+        script.OnHitHandler += new EventHandler(OnTraceHit); //listen on hit effect of trace
+
         if (Target.IsDead) forceStop = true;
 
         yield return new WaitForSeconds(timeBetweenCasts);
       }
 
+      forceStop = false;
       StartCoroutine(Cooldown());
     }
 
     IEnumerator Cooldown()
     {
       channeling = null;
-      forceStop = false;
       State = SpellCastingState.Cooldown;
       onSpellCooldown.Invoke("Consume", cooldownTime);
       yield return new WaitForSeconds(cooldownTime);
       State = SpellCastingState.Ready;
     }
 
-    public void OnTraceHit(object sender, EventArgs e)
-    {
-      energyTraces--;
-      onEnergyTraceConsumed?.Invoke();
-    }
+    public void OnTraceHit(object sender, EventArgs e) => energyTraces--;
 
     public void Stop()
     {
@@ -83,6 +86,8 @@ namespace Assets.Scripts.SpellCasting
         StopCoroutine(channeling);
         StartCoroutine(Cooldown());
       }
+
+      forceStop = false;
     }
   }
 }

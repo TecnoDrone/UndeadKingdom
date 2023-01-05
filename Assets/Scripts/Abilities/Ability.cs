@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Player;
+using UnityEngine;
 
 namespace Assets.Scripts.Abilities
 {
   public abstract class Ability : MonoBehaviour
   {
     public KeyCode key;
-    public Player.PlayerStance state;
+    public PlayerStance state;
 
     public virtual void Update()
     {

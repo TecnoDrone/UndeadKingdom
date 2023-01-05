@@ -1,5 +1,7 @@
-﻿using Extentions;
+﻿using Assets.Scripts.AI;
+using Extentions;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.Spells
@@ -10,6 +12,11 @@ namespace Assets.Scripts.Spells
     public GameObject hitObject;
 
     public float speed;
+    public int damage;
+    public float radius;
+
+    public LayerMask whatToHeal;
+    public LayerMask whatToDamage;
 
     [HideInInspector]
     public Vector3 destination;
@@ -90,6 +97,25 @@ namespace Assets.Scripts.Spells
 
       audioSource.PlayClipAtPoint(transform.position, hitSound);
       Instantiate(hitObject, new Vector3(transform.position.x, transform.position.y + 0.02f, transform.position.z), hitObject.transform.rotation); //NB: looks good only when near terrain
+
+      var hits = Physics.SphereCastAll(transform.position, radius, transform.up, whatToHeal);
+      if (hits != null && hits.Any())
+      {
+        foreach(var hit in hits)
+        {
+          var entity = hit.transform.GetComponent<EntityAI>();
+
+          if (1 << hit.transform.gameObject.layer == whatToHeal)
+          {
+            entity.Heal(damage);
+          }
+
+          if (1 << hit.transform.gameObject.layer == whatToDamage)
+          {
+            entity.TakeDamage(damage);
+          }
+        }
+      }
 
       StartCoroutine(TearDown());
     }

@@ -10008,6 +10008,14 @@ MonoBehaviour:
   hitObject: {fileID: 5693933208502102958, guid: c7690dc82a41c814f97ea4b6e283effe,
     type: 3}
   speed: 7
+  damage: 1
+  radius: 1
+  whatToHeal:
+    serializedVersion: 2
+    m_Bits: 64
+  whatToDamage:
+    serializedVersion: 2
+    m_Bits: 8192
   destination: {x: 0, y: 0, z: 0}
   trajectoryHeight: 0
 --- !u!82 &5220608943736994170

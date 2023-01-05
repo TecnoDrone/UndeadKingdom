@@ -56,9 +56,9 @@ public class Entity : MonoBehaviour
     }
   }
 
-  public virtual void TakeDamage(int dmg)
+  public virtual void TakeDamage(int amount)
   {
-    life -= dmg;
+    life -= amount;
     if (life <= 0 && !isDead)
     {
       Death();
@@ -73,6 +73,14 @@ public class Entity : MonoBehaviour
 
     restartAnimation = true;
     counter = 0;
+  }
+
+  public virtual void Heal(int amount)
+  {
+    if (life == maxLife) return;
+
+    life += amount;
+    if (life > maxLife) life = maxLife;
   }
 
   //The entity dies and leave a corpse on the ground

@@ -26,7 +26,6 @@ namespace Assets.Scripts.Player.Casting
         {
           PlayerEntity.Instance.State = PlayerState.Casting;
           PlayerEntity.onPlayerStateChange.Invoke(PlayerState.Casting);
-          PlayerEntity.Instance.ConsumeLife(energyCost);
         }
       }
 
@@ -35,6 +34,7 @@ namespace Assets.Scripts.Player.Casting
         if (State != SpellCastingState.Channeling) return;
 
         Shoot();
+        PlayerEntity.Instance.ConsumeLife(energyCost);
         PlayerEntity.Instance.State = PlayerState.Idle;
         PlayerEntity.onPlayerStateChange.Invoke(PlayerState.Idle);
       }

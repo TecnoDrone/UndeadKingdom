@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Projectiles;
 using Assets.Scripts.SpellCasting;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Player.Casting
@@ -9,21 +10,19 @@ namespace Assets.Scripts.Player.Casting
     public PlayerStance stance;
     public KeyCode key;
 
-    private float energyCost;
-
     private void Start()
     {
       PlayerEntity.onPlayerStanceChange += CheckStance;
       onEnergyTraceConsumed += CheckPlayerLife;
-
-      energyCost = energyTrace.GetComponent<EnergyTrace>().energy;
+      OnTraceSpawnedHandler += CheckTraces;
     }
 
     void Update()
     {
+      if (PlayerEntity.Instance.Stance != stance) return;
+
       if (Input.GetKeyDown(key))
       {
-        if (PlayerEntity.Instance.Stance != stance) return;
         if (PlayerEntity.Instance.life == PlayerEntity.Instance.maxLife) return;
         if (State != SpellCastingState.Ready) return;
 
@@ -47,6 +46,8 @@ namespace Assets.Scripts.Player.Casting
       if (PlayerEntity.Instance.life + energyTraces >= PlayerEntity.Instance.maxLife)
         forceStop = true;
     }
+
+    void CheckTraces(object sender, EventArgs e) => CheckPlayerLife();
 
     void CheckStance()
     {

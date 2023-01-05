@@ -1,6 +1,8 @@
 using Assets.Scripts.Abilities;
 using Assets.Scripts.AI;
 using Assets.Scripts.Managers;
+using Assets.Scripts.Player;
+using System.Collections;
 using UnityEngine;
 
 /***********************************************************************
@@ -11,9 +13,11 @@ using UnityEngine;
  * *********************************************************************/
 namespace Assets.Scripts.Spells
 {
-  public class SelectTroops : Ability
+  public class SelectTroops : MonoBehaviour
   {
-    private bool IsDraggingMouseBox = false;
+    public KeyCode key;
+    public PlayerStance state;
+
     private Vector3 DragStartPosition;
 
     private Texture2D _whiteTexture;
@@ -32,61 +36,89 @@ namespace Assets.Scripts.Spells
       }
     }
 
-    public override void Update()
-    {
-      base.Update();
+    private Coroutine selecting;
 
-      if (IsDraggingMouseBox)
+    private void Start()
+    {
+      PlayerEntity.onPlayerStanceChange += CheckPlayerStance;
+    }
+
+    private void Update()
+    {
+      if (PlayerEntity.Instance.Stance != state) return;
+
+      if (Input.GetKeyDown(key) && PlayerEntity.Instance.State == PlayerState.Idle)
       {
-        SelectUnitsInDraggingBox();
+        DeselectAll();
+
+        DragStartPosition = Input.mousePosition;
+        selecting = StartCoroutine(Selecting());
+
+        PlayerEntity.Instance.State = PlayerState.Casting;
+        PlayerEntity.onPlayerStateChange.Invoke(PlayerState.Casting);
+      }
+
+      if (Input.GetKeyUp(key) && selecting != null)
+      {
+        Stop();
       }
     }
 
-    public override void OnKeyUp()
+    private void CheckPlayerStance()
     {
-      IsDraggingMouseBox = false;
+      if (PlayerEntity.Instance.Stance != state)
+      {
+        Stop();
+        DeselectAll();
+      }
     }
 
-    public override void OnKeyDown()
+    private void Stop()
     {
-      if (IsDraggingMouseBox) return;
+      if (selecting != null)
+      {
+        StopCoroutine(selecting);
+        selecting = null;
 
-      DeselectAll();
-      DragStartPosition = Input.mousePosition;
-      IsDraggingMouseBox = true;
+        PlayerEntity.Instance.State = PlayerState.Idle;
+        PlayerEntity.onPlayerStateChange.Invoke(PlayerState.Idle);
+      }
     }
 
-    public override void OnKey() { }
+    IEnumerator Selecting()
+    {
+      while (true)
+      {
+        var selectionBounds = GetViewportBounds(DragStartPosition, Input.mousePosition);
+        var selectableUnits = PlayerEntity.ControlledMinions;
+
+        foreach (var unit in selectableUnits)
+        {
+          if (unit == null) continue;
+          var inBounds = selectionBounds.Contains(Camera.main.WorldToViewportPoint(unit.transform.position));
+
+          if (inBounds)
+          {
+            Select(unit);
+          }
+          else
+          {
+            Deselect(unit);
+          }
+        }
+
+        yield return null;
+      }
+    }
 
     private void OnGUI()
     {
-      if (IsDraggingMouseBox)
+      if (selecting != null)
       {
         // Create a rect from both mouse positions
         var rect = GetScreenRect(DragStartPosition, Input.mousePosition);
         DrawScreenRect(rect, new Color(0.5f, 1f, 0.4f, 0.2f));
         DrawScreenRectBorder(rect, 1, new Color(0.5f, 1f, 0.4f));
-      }
-    }
-
-    private void SelectUnitsInDraggingBox()
-    {
-      var selectionBounds = GetViewportBounds(DragStartPosition, Input.mousePosition);
-      var selectableUnits = PlayerEntity.ControlledMinions;
-
-      foreach (var unit in selectableUnits)
-      {
-        if (unit == null) continue;
-        var inBounds = selectionBounds.Contains(Camera.main.WorldToViewportPoint(unit.transform.position));
-
-        if (inBounds)
-        {
-          Select(unit);
-        }
-        else
-        {
-          Deselect(unit);
-        }
       }
     }
 
@@ -105,6 +137,7 @@ namespace Assets.Scripts.Spells
       }
     }
 
+    //2023-01-04 e.oliosi - TODO: stop using GameManager, replace with local list of
     private void DeselectAll()
     {
       foreach (var skeleton in GameManager.SelectedUnits.Values)
@@ -180,8 +213,5 @@ namespace Assets.Scripts.Spells
       // Create Rect
       return Rect.MinMaxRect(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
     }
-
-
   }
-
 }

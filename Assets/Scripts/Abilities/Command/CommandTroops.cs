@@ -1,6 +1,7 @@
-﻿using Assets.Scripts.Abilities;
-using Assets.Scripts.Generic;
+﻿using Assets.Scripts.Generic;
 using Assets.Scripts.Managers;
+using Assets.Scripts.Player;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,28 +16,122 @@ using UnityEngine;
 //If a wall is hit, then the unit position is shortened.
 namespace Assets.Scripts.Spells
 {
-  public class CommandTroops : Ability
+  public class CommandTroops : MonoBehaviour
   {
+    public KeyCode key;
+    public PlayerStance state;
+
     private Dictionary<int, Ghost> Ghosts = new Dictionary<int, Ghost>();
     private float? speed = null;
     private GameObject container;
     private Vector3 destination;
 
-    public void Start()
+    private Coroutine rotating;
+
+    //2023-01-04 e.oliosi - TODO: remove container when skill is over with
+    private void Start()
     {
       container = new GameObject("Command");
+      PlayerEntity.onPlayerStanceChange += CheckPlayerStance;
     }
 
-    public override void Update()
+    private void Update()
     {
+      if (PlayerEntity.Instance.Stance != state) return;
       if (!GameManager.SelectedUnits.Any()) return;
-      base.Update();
+
+      if (Input.GetKeyDown(key))
+      {
+        if (PlayerEntity.Instance.State == PlayerState.Casting) return;
+
+        if (Preview())
+        {
+          PlayerEntity.Instance.State = PlayerState.Casting;
+          PlayerEntity.onPlayerStateChange.Invoke(PlayerState.Casting);
+          rotating = StartCoroutine(RotatePreview());
+        }
+      }
+
+      if (Input.GetKeyUp(key) && rotating != null)
+      {
+        Stop();
+        Command();
+      }
     }
 
-    public void InitializePreview()
+    private void CheckPlayerStance()
     {
+      if (PlayerEntity.Instance.Stance != state) Stop();
+    }
+
+    private void Stop()
+    {
+      if (rotating != null)
+      {
+        StopCoroutine(rotating);
+        rotating = null;
+
+        PlayerEntity.Instance.State = PlayerState.Idle;
+        PlayerEntity.onPlayerStateChange.Invoke(PlayerState.Idle);
+
+        foreach (var (_, ghost) in Ghosts)
+        {
+          Destroy(ghost.go);
+        }
+
+        Ghosts.Clear();
+        container.transform.rotation = default;
+      }
+    }
+
+    /// <summary>
+    /// Shows the user a ghost preview of the position each troop will occupy once the command is given
+    /// </summary>
+    IEnumerator RotatePreview()
+    {
+      while (true)
+      {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Physics.Raycast(ray, out var hit, Mathf.Infinity);
+
+        destination = new Vector3(hit.point.x, 0, hit.point.z);
+
+        Vector3 direction = container.transform.localPosition - destination;
+
+        var rotation = Quaternion.LookRotation(-container.transform.up, direction).eulerAngles.y;
+        container.transform.rotation = Quaternion.Euler(new Vector3(0, rotation, 0));
+
+        yield return null;
+      }
+    }
+
+    private void Command()
+    {
+      //check location under mouse and decide one of the following
+      //- Attack
+      //- Move
+      foreach (var (id, ghost) in Ghosts)
+      {
+        var unit = GameManager.SelectedUnits[id];
+        unit.WalkTo(ghost.go.transform.position, speed);
+        Destroy(ghost.go);
+      }
+
+      Ghosts.Clear();
+      container.transform.rotation = default;
+    }
+
+    private bool Preview()
+    {
+      Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+      var hasHit = Physics.Raycast(ray, out var hit, Mathf.Infinity, 1 << LayerMask.NameToLayer("Ground"));
+      if (!hasHit) return false;
+
+      container.transform.position = hit.point;
+      var gameobjectHit = hit.transform.gameObject;
+
       var army = GameManager.SelectedUnits;
-      if (army == null || !army.Any()) return;
+      if (army == null || !army.Any()) return false;
 
       //Order Divisions regroup by kind
       var groups =
@@ -75,63 +170,12 @@ namespace Assets.Scripts.Spells
           var position = positions[i];
 
           var ghost = new Ghost(unit.sprite, container.transform, position);
-          Ghosts.Add(id, ghost);
+
+          if (!Ghosts.ContainsKey(id)) Ghosts.Add(id, ghost);
         }
       }
-    }
 
-    /// <summary>
-    /// Shows the user a ghost preview of the position each troop will occupy once the command is given
-    /// </summary>
-    public void RotatePreview()
-    {
-      Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-      Physics.Raycast(ray, out var hit, Mathf.Infinity);
-
-      destination = new Vector3(hit.point.x, 0, hit.point.z);
-
-      Vector3 direction = container.transform.localPosition - destination;
-      //container.transform.rotation = Quaternion.LookRotation(-container.transform.up, direction);
-      var rotation = Quaternion.LookRotation(-container.transform.up, direction).eulerAngles.y;
-      container.transform.rotation = Quaternion.Euler(new Vector3(0, rotation, 0));
-    }
-
-    public override void OnKeyUp()
-    {
-      //check location under mouse and decide one of the following
-      //- Attack
-      //- Move
-      foreach (var (id, ghost) in Ghosts)
-      {
-        var unit = GameManager.SelectedUnits[id];
-        unit.WalkTo(ghost.go.transform.position, speed);
-        Destroy(ghost.go);
-      }
-
-      Ghosts.Clear();
-      container.transform.rotation = default;
-    }
-
-    public override void OnKeyDown()
-    {
-      Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-      var hasHit = Physics.Raycast(ray, out var hit, Mathf.Infinity);
-      if (!hasHit) return;
-
-      container.transform.position = hit.point;
-
-      var gameobjectHit = hit.transform.gameObject;
-      var layerHit = gameobjectHit.layer;
-
-      if (layerHit == LayerMask.NameToLayer("Ground"))
-      {
-        InitializePreview();
-      }
-    }
-
-    public override void OnKey()
-    {
-      RotatePreview();
+      return true;
     }
   }
 
