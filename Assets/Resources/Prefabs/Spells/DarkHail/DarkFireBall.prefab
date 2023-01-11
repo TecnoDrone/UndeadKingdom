@@ -10007,6 +10007,8 @@ MonoBehaviour:
   hitSound: {fileID: 8300000, guid: 587a9ee1ebf50b744864feb56894e2b5, type: 3}
   hitObject: {fileID: 5693933208502102958, guid: c7690dc82a41c814f97ea4b6e283effe,
     type: 3}
+  healingEffect: {fileID: 666560619215983933, guid: c7eafeb9dbd9e7b44a67516816c2c7a6,
+    type: 3}
   speed: 7
   damage: 1
   radius: 1
@@ -10027,7 +10029,8 @@ AudioSource:
   m_GameObject: {fileID: 4952145786736828823}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 5345691297065296125, guid: 47ec01595f930e84182bbf6cdd7592da,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 8dd9fe39880a90544bc9b9f416892c94, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.1

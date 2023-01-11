@@ -3,6 +3,7 @@ using Assets.Scripts.Managers;
 using System.Collections.Generic;
 using Extentions;
 using UnityEngine;
+using System.Linq;
 
 public class KnightAI : CombatAI
 {
@@ -21,7 +22,10 @@ public class KnightAI : CombatAI
   {
     base.Start();
 
-    var randomClip = ReanimationClips[Random.Range(0, ReanimationClips.Count - 1)];
-    audioSource.PlayClipAtPoint(transform.position, randomClip, Random.Range(0.9f, 1.1f), audioSource.volume);
+    if(ReanimationClips.Any())
+    {
+      var randomClip = ReanimationClips[Random.Range(0, ReanimationClips.Count - 1)];
+      audioSource.PlayClipAtPoint(transform.position, randomClip, Random.Range(0.9f, 1.1f), audioSource.volume);
+    }
   }
 }

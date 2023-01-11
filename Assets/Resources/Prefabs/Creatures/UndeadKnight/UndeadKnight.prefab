@@ -3783,7 +3783,7 @@ ParticleSystem:
         m_RotationOrder: 4
     minKillSpeed: 0
     maxKillSpeed: 10000
-    radiusScale: 1
+    radiusScale: 1.5
     collidesWith:
       serializedVersion: 2
       m_Bits: 8
@@ -9944,8 +9944,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2001c85cd209a0147bf3027a04f993ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  life: 10
-  maxLife: 10
+  life: 1000
+  maxLife: 1000
   hurtSoundEffect: {fileID: 8300000, guid: 30dceaf09e8a94543b7cc9774e741691, type: 3}
   spriteRenderer: {fileID: 0}
   whatBlocksVision:
@@ -10028,7 +10028,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b29982187e87eeb4d8ff94c85401e556, type: 2}
+  - {fileID: 2100000, guid: 57ecc3de41df0fa43a0932fdc44e989e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10180,7 +10180,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &793524927157941096
 Transform:
   m_ObjectHideFlags: 0

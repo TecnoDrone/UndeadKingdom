@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Managers;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -75,12 +76,16 @@ public class Entity : MonoBehaviour
     counter = 0;
   }
 
-  public virtual void Heal(int amount)
+  public virtual bool Heal(int amount)
   {
-    if (life == maxLife) return;
+    if (life == maxLife) return false;
 
     life += amount;
     if (life > maxLife) life = maxLife;
+
+    StartCoroutine(HealingAnimation());
+
+    return true;
   }
 
   //The entity dies and leave a corpse on the ground
@@ -121,5 +126,14 @@ public class Entity : MonoBehaviour
     if (!isDead) Death();
 
     return bodyparts;
+  }
+
+  IEnumerator HealingAnimation()
+  {
+    spriteRenderer.material.SetFloat("_Healing", 1);
+
+    yield return new WaitForSeconds(1);
+
+    spriteRenderer.material.SetFloat("_Healing", 0);
   }
 }

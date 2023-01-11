@@ -80,6 +80,7 @@ namespace Extentions
       source.spatialBlend = audioSource.spatialBlend;
       source.maxDistance = audioSource.maxDistance;
       source.rolloffMode = audioSource.rolloffMode;
+      source.outputAudioMixerGroup = audioSource.outputAudioMixerGroup;  
       source.Play();
 
       UnityEngine.Object.Destroy(go, clip?.length ?? audioSource.clip.length);

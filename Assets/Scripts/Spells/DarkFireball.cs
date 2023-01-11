@@ -11,6 +11,8 @@ namespace Assets.Scripts.Spells
     public AudioClip hitSound;
     public GameObject hitObject;
 
+    public GameObject healingEffect;
+
     public float speed;
     public int damage;
     public float radius;
@@ -98,6 +100,7 @@ namespace Assets.Scripts.Spells
       audioSource.PlayClipAtPoint(transform.position, hitSound);
       Instantiate(hitObject, new Vector3(transform.position.x, transform.position.y + 0.02f, transform.position.z), hitObject.transform.rotation); //NB: looks good only when near terrain
 
+      bool hasHealed = false;
       var hits = Physics.SphereCastAll(transform.position, radius, transform.up, whatToHeal);
       if (hits != null && hits.Any())
       {
@@ -107,7 +110,11 @@ namespace Assets.Scripts.Spells
 
           if (1 << hit.transform.gameObject.layer == whatToHeal)
           {
-            entity.Heal(damage);
+            if(entity.Heal(damage))
+            {
+              Instantiate(healingEffect, hit.transform.position, default);
+              hasHealed = true;
+            }
           }
 
           if (1 << hit.transform.gameObject.layer == whatToDamage)
@@ -115,6 +122,11 @@ namespace Assets.Scripts.Spells
             entity.TakeDamage(damage);
           }
         }
+      }
+
+      if(hasHealed)
+      {
+        audioSource.PlayClipAtPoint(transform.position, healingEffect.GetComponent<AudioSource>().clip);
       }
 
       StartCoroutine(TearDown());

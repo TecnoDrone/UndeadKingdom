@@ -7,17 +7,19 @@ namespace Assets.Scripts
   {
     public float amplitude = 1f;
     public float speed = 0.1f;
+    //private Vector3 _startPosition;
 
-    private float startingY;
-
-    private void Start()
+    void Start()
     {
-      startingY = transform.position.y + amplitude;
+      //_startPosition = transform.position;
     }
 
-    private void Update()
+    void Update()
     {
-      transform.position = new Vector3(transform.position.x, startingY + amplitude * Mathf.Sin(speed * Time.time), transform.position.z);
+      var _newPosition = transform.position;
+      _newPosition.y += Mathf.Sin(Time.time * speed) * amplitude * Time.deltaTime;
+      transform.position = _newPosition;
+      //transform.position = _startPosition + new Vector3(Mathf.Sin(Time.time), 0.0f, 0.0f);
     }
   }
 }
