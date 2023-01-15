@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.AI;
+﻿using Assets.Scripts.AI.Undead;
 using Assets.Scripts.Player;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ namespace Assets.Scripts
   {
     public static PlayerEntity Instance { get; private set; }
 
-    public static List<CombatAI> ControlledMinions;
+    public static List<Undead> ControlledMinions;
 
     [HideInInspector]
     public static AudioListener listener;
@@ -91,8 +91,8 @@ namespace Assets.Scripts
 
       listener = GetComponent<AudioListener>();
 
-      ControlledMinions = new List<CombatAI>();
-      ControlledMinions = FindObjectsOfType<CombatAI>()?.ToList();
+      ControlledMinions = new List<Undead>();
+      ControlledMinions = FindObjectsOfType<Undead>()?.ToList();
     }
   }
 }

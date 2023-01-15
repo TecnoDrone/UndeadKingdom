@@ -8,7 +8,7 @@ namespace Assets.Scripts.AI
     public int Damage = 1;
     public float attackRange = 10f;
     public float attackSpeed = 1f;
-    public Team squad;
+
     public int order = 0;
 
     private float lastAttackTime;

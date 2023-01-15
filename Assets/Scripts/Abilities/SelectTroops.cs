@@ -1,5 +1,6 @@
 using Assets.Scripts.Abilities;
 using Assets.Scripts.AI;
+using Assets.Scripts.AI.Undead;
 using Assets.Scripts.Managers;
 using Assets.Scripts.Player;
 using System.Collections;
@@ -122,15 +123,15 @@ namespace Assets.Scripts.Spells
       }
     }
 
-    private void Select(CombatAI AIs)
+    private void Select(Undead undead)
     {
-      if (AIs == null) return;
+      if (undead == null) return;
 
-      int id = AIs.GetInstanceID();
+      int id = undead.GetInstanceID();
       if (GameManager.SelectedUnits.ContainsKey(id)) return;
-      GameManager.SelectedUnits.Add(id, AIs);
+      GameManager.SelectedUnits.Add(id, undead);
 
-      var selection = AIs.transform.Find("Selection");
+      var selection = undead.transform.Find("Selection");
       if (selection != null)
       {
         selection.gameObject.SetActive(true);

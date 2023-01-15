@@ -8,26 +8,29 @@ namespace Assets.Scripts.Managers
 {
   public class CorpseManager : MonoBehaviour
   {
-    static Dictionary<CreatureKind, List<GameObject>> Corpses = new Dictionary<CreatureKind, List<GameObject>>();
+    static Dictionary<(Team, CreatureKind), List<GameObject>> Corpses = new Dictionary<(Team, CreatureKind), List<GameObject>>();
 
     private void Start()
     {
       //Cache every corpse of every creature kind
       foreach (CreatureKind kind in Enum.GetValues(typeof(CreatureKind)))
       {
-        Corpses[kind] = LoadCorpses(kind);
+        foreach(Team team in Enum.GetValues(typeof(Team)))
+        {
+          Corpses[(team, kind)] = LoadCorpses(team, kind);
+        }
       }
     }
 
-    private List<GameObject> LoadCorpses(CreatureKind kind)
+    private List<GameObject> LoadCorpses(Team team, CreatureKind kind)
     {
-      var corpses = Resources.LoadAll<GameObject>($"Prefabs/Creatures/{kind}/Corpse").ToList();
+      var corpses = Resources.LoadAll<GameObject>($"Prefabs/Creatures/{team}/{kind}/Corpse").ToList();
       return corpses;
     }
 
-    public static GameObject GetRandomCorspe(CreatureKind kind)
+    public static GameObject GetRandomCorspe(Team team, CreatureKind kind)
     {
-      var corpses = Corpses[kind];
+      var corpses = Corpses[(team, kind)];
       var random = Random.Range(0, corpses.Count - 1);
 
       var corpse = corpses.ElementAt(random);

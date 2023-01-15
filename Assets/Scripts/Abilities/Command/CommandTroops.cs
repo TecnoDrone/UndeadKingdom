@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Generic;
 using Assets.Scripts.Managers;
 using Assets.Scripts.Player;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,8 +55,8 @@ namespace Assets.Scripts.Spells
 
       if (Input.GetKeyUp(key) && rotating != null)
       {
-        Stop();
         Command();
+        Stop();
       }
     }
 
@@ -116,9 +117,6 @@ namespace Assets.Scripts.Spells
         unit.WalkTo(ghost.go.transform.position, speed);
         Destroy(ghost.go);
       }
-
-      Ghosts.Clear();
-      container.transform.rotation = default;
     }
 
     private bool Preview()
@@ -152,15 +150,19 @@ namespace Assets.Scripts.Spells
       //Calculate where the first divion will be placed
       var divisionHeight = groups.Sum(s => s.Configuration.Length);
       var zStart = container.transform.position.z - (divisionHeight / 2f);
-      var zOffset = 0;
 
+      var zOffset = 1;
       foreach ((var squadron, var configuration, var direction, var speed) in groups)
       {
         var xOffset = ((10f - configuration.Max()) / 2) - 4.5f;
-        zOffset += 1;//configuration.Length;
+
+        //si spacca se conf 2 e arc
+        if (direction == -1 && configuration.Length > 1) zOffset += 1;
+
 
         //Calculate current division position and calculate the position of each unit from that starting point
         var squadronPosition = new Vector3(container.transform.position.x + xOffset, container.transform.position.y, zStart + zOffset);
+        Debug.DrawLine(squadronPosition, squadronPosition + Vector3.up, Color.red, 10000);
         var positions = SquadronService.GetPositions(squadron.Count, squadronPosition, direction);
 
         //Apply position to each ghost
@@ -173,6 +175,8 @@ namespace Assets.Scripts.Spells
 
           if (!Ghosts.ContainsKey(id)) Ghosts.Add(id, ghost);
         }
+
+        zOffset += configuration.Length;
       }
 
       return true;

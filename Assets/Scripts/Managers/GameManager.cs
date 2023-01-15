@@ -1,4 +1,5 @@
 using Assets.Scripts.AI;
+using Assets.Scripts.AI.Undead;
 using Assets.Scripts.Player;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Assets.Scripts.Managers
     public static HashSet<Entity> DeadEntities = new HashSet<Entity>();
 
     public static Dictionary<EntityAI, Entity> FightersTargets = new Dictionary<EntityAI, Entity>();
-    public static Dictionary<int, CombatAI> SelectedUnits = new Dictionary<int, CombatAI>();
+    public static Dictionary<int, Undead> SelectedUnits = new Dictionary<int, Undead>();
 
     public static GameState gameState = GameState.Running;
 

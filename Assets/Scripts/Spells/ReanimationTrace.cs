@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.AI;
+﻿using Assets.Scripts.AI.Undead;
 using Extentions;
 using System;
 using System.Collections;
@@ -48,10 +48,10 @@ namespace Assets.Scripts.Spells.Projectile
 
       //Generate undead
       var corpseBehavior = other.GetComponent<Corpse>();
-      var undead = Instantiate(corpseBehavior.Reanimation, other.transform.position, corpseBehavior.Reanimation.transform.rotation);
+      var undead = Instantiate(corpseBehavior.Reanimation, other.GetComponentInChildren<SpriteRenderer>().bounds.center, corpseBehavior.Reanimation.transform.rotation);
 
       //Set undead under player control
-      PlayerEntity.ControlledMinions.Add(undead.GetComponent<CombatAI>());
+      PlayerEntity.ControlledMinions.Add(undead.GetComponent<Undead>());
 
       //Destroy corpse
       Destroy(other.gameObject);
@@ -67,7 +67,7 @@ namespace Assets.Scripts.Spells.Projectile
 
     IEnumerator QueueDestruction()
     {
-      while(true)
+      while (true)
       {
         if (particleSystem.particleCount == 0) Destroy(gameObject);
         yield return null;
