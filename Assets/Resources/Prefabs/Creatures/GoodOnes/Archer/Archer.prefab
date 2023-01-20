@@ -315,6 +315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   life: 10
+  maxLife: 10
   hurtSoundEffect: {fileID: 8300000, guid: 0d253a58675af3b4083dda24610e29eb, type: 3}
   spriteRenderer: {fileID: 0}
   whatBlocksVision:
@@ -322,17 +323,19 @@ MonoBehaviour:
     m_Bits: 4096
   whatIsEnemy:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 576
   state: 0
   Kind: 0
+  squad: 0
   viewDistance: 10
   roamDistance: 0
   target: {fileID: 0}
   sprite: {fileID: 0}
+  originalSpeed: 0
   Damage: 1
   attackRange: 5
   attackSpeed: 1
-  squad: 0
+  order: 2
   Arrow: {fileID: 1123969984028673198, guid: 96379c7db8c2d5d46b9471f4ea3084fc, type: 3}
 --- !u!1 &3154107414535150517
 GameObject:
