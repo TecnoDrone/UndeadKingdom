@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Assets.Scripts.Managers;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.AI
@@ -28,6 +29,13 @@ namespace Assets.Scripts.AI
         case State.Chase: Chase(); break;
         case State.Fight: Fight(); break;
       }
+    }
+
+    public override void SetTarget(Entity target)
+    {
+      base.SetTarget(target);
+      GameManager.FightersTargets[this] = target;
+      state = State.Chase;
     }
 
     private void Chase()

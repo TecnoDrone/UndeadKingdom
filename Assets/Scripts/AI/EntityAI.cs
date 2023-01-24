@@ -34,7 +34,12 @@ namespace Assets.Scripts.AI
     protected bool isWalking;
 
     //Starting speed, taken from NavMeshAgent
+    [HideInInspector]
     public float originalSpeed;
+
+    public delegate void OnStateChange();
+    public static OnStateChange onStateChange;
+
     public override void Start()
     {
       base.Start();
@@ -74,7 +79,7 @@ namespace Assets.Scripts.AI
 
     protected virtual void Roam()
     {
-      FindTarget();
+      if (FindTarget()) return;
 
       if (roamDistance > 0 && roamingPosition != null)
       {
@@ -140,19 +145,15 @@ namespace Assets.Scripts.AI
 
     private bool FindTarget()
     {
-      if (target == null)
-      {
-        var hits = Physics.OverlapSphere(transform.position, viewDistance, whatIsEnemy).ToList();
-        if (hits != null && hits.Count > 0)
-        {
-          var distances = hits.Select(hit => (hit, distance: Vector3.Distance(hit.transform.position, transform.position))).OrderBy(x => x.distance);
-          var entity = distances.First().hit.GetComponentInParent<Entity>();
-          SetTarget(entity);
-          return true;
-        }
-      }
+      if (target != null) return false;
 
-      return false;
+      var hits = Physics.OverlapSphere(transform.position, viewDistance, whatIsEnemy);
+      if (hits == null || hits.Length == 0) return false;
+
+      var distances = hits.Select(hit => (hit, distance: Vector3.Distance(hit.transform.position, transform.position))).OrderBy(x => x.distance);
+      var entity = distances.First().hit.GetComponentInParent<Entity>();
+      SetTarget(entity);
+      return true;
     }
 
     //Reset to default state
@@ -174,11 +175,9 @@ namespace Assets.Scripts.AI
       state = State.Roam;
     }
 
-    public void SetTarget(Entity target)
+    public virtual void SetTarget(Entity target)
     {
       this.target = target;
-      GameManager.FightersTargets[this] = target;
-      state = State.Chase;
     }
 
     public enum State
