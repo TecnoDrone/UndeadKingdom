@@ -12,7 +12,6 @@ namespace Assets.Scripts.AI
     public State state;
 
     public CreatureKind Kind;
-    public Team squad;
 
     public float viewDistance = 3f;
     public float roamDistance = 0f;
@@ -73,7 +72,7 @@ namespace Assets.Scripts.AI
 
     public override void OnDeath()
     {
-      var corspe = CorpseManager.GetRandomCorspe(squad, Kind);
+      var corspe = CorpseManager.GetRandomCorspe(team, Kind);
       Instantiate(corspe, transform.position, corspe.transform.rotation);
     }
 

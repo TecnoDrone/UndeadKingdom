@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 171672293923688724}
   - component: {fileID: 171672293923688731}
   - component: {fileID: 171672293923688726}
-  - component: {fileID: 171672293923688725}
   - component: {fileID: 1766356091}
-  m_Layer: 14
+  - component: {fileID: 5963232892339123154}
+  m_Layer: 13
   m_Name: King
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -155,33 +155,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &171672293923688725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 171672293923688730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7383b39006e9417429f39a562d052741, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  life: 10
-  hurtSoundEffect: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  whatBlocksVision:
-    serializedVersion: 2
-    m_Bits: 4096
-  whatIsEnemy:
-    serializedVersion: 2
-    m_Bits: 1600
-  state: 0
-  viewDistance: 3
-  roamDistance: 0
-  target: {fileID: 0}
-  sprite: {fileID: 0}
-  currentThreat: {fileID: 0}
 --- !u!54 &1766356091
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -198,6 +171,41 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5963232892339123154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171672293923688730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 260e5710ec5e13946994ba9fdb22356d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  life: 10
+  maxLife: 10
+  hurtSoundEffect: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  whatBlocksVision:
+    serializedVersion: 2
+    m_Bits: 4096
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 576
+  state: 0
+  Kind: 1
+  squad: 0
+  viewDistance: 3
+  roamDistance: 0
+  target: {fileID: 0}
+  sprite: {fileID: 0}
+  originalSpeed: 0
+  Damage: 0
+  attackRange: 10
+  attackSpeed: 1
+  order: 0
+  threat: {fileID: 0}
 --- !u!1 &171672294922970682
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,7 +217,7 @@ GameObject:
   - component: {fileID: 171672294922970683}
   - component: {fileID: 171672294922970676}
   - component: {fileID: 171672294922970677}
-  m_Layer: 14
+  m_Layer: 13
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -314,7 +322,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8087953558534706139}
   - component: {fileID: 6420537198635804902}
-  m_Layer: 14
+  m_Layer: 13
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

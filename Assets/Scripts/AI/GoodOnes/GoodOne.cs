@@ -5,7 +5,7 @@
     public override void Start()
     {
       base.Start();
-      squad = Team.GoodOnes;
+      team = Team.GoodOnes;
     }
   }
 }

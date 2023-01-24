@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Managers;
+﻿using Assets.Scripts;
+using Assets.Scripts.Managers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class Entity : MonoBehaviour
   //Alive variables
   public int life = 10;
   public int maxLife = 10;
+  public Team team;
 
   [HideInInspector]
   public bool IsDead => life <= 0;

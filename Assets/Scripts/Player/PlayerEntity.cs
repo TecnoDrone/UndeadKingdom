@@ -88,6 +88,7 @@ namespace Assets.Scripts
     private void Init()
     {
       Instance = this;
+      team = Team.Undead;
 
       listener = GetComponent<AudioListener>();
 

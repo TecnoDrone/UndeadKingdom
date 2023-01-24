@@ -43,7 +43,7 @@ MonoBehaviour:
     width: 1920
     height: 997
   m_ShowMode: 4
-  m_Title: Scene
+  m_Title: Hierarchy
   m_RootView: {fileID: 5}
   m_MinSize: {x: 875, y: 371}
   m_MaxSize: {x: 10000, y: 10000}
@@ -97,7 +97,7 @@ MonoBehaviour:
   m_MinSize: {x: 230, y: 271}
   m_MaxSize: {x: 10000, y: 10021}
   vertical: 0
-  controlID: 111
+  controlID: 151
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -192,7 +192,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 200}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 1
-  controlID: 18
+  controlID: 19936
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -217,7 +217,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 200}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 19
+  controlID: 19937
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -242,7 +242,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 1
-  controlID: 100
+  controlID: 19938
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -268,7 +268,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 8096}
   vertical: 0
-  controlID: 101
+  controlID: 19939
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -445,21 +445,21 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts/AI
+    - Assets/Resources/Prefabs/Creatures/GoodOnes/Archer/Corpse
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Scripts/AI
+  - Assets/Resources/Prefabs/Creatures/GoodOnes/Archer/Corpse
   m_LastFoldersGridSize: -1
   m_LastProjectPath: Z:\Unity projects\Undead Kingdom  2.5D
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: ca650000
-    m_LastClickedID: 26058
+    m_SelectedIDs: da6d0000
+    m_LastClickedID: 28122
     m_ExpandedIDs: 00000000a8650000aa650000ac650000ae650000b0650000b2650000b4650000b6650000b8650000ba650000bc650000be650000c0650000c2650000c4650000c6650000c8650000ca650000cc650000ce650000f66d0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -515,7 +515,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: 947c0000000000000e46fcffe0610000c8770000ce6e0000ca6e0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -671,7 +671,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 604cffff204dffff92a3fffffefaffff
+      m_ExpandedIDs: c2ecfcff82edfcffda47fdff444ffdff0450fdff54aafdffa65effff16f6fffffefaffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -943,9 +943,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -3.538187, y: -0.092615604, z: 1.2356632}
+    m_Target: {x: -10.982469, y: -4.6391497, z: -5.9349527}
     speed: 2
-    m_Value: {x: -3.538187, y: -0.092615604, z: 1.2356632}
+    m_Value: {x: -10.982469, y: -4.6391497, z: -5.9349527}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -994,11 +994,11 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: 0.47928688, y: -0.005590602, z: 0.0030466125, w: 0.87772804}
     speed: 2
-    m_Value: {x: -0.47928685, y: 0.005590602, z: -0.0030466123, w: -0.87772804}
+    m_Value: {x: 0.47924787, y: -0.005590147, z: 0.0030463645, w: 0.8776566}
   m_Size:
-    m_Target: 8.182118
+    m_Target: 9.51168
     speed: 2
-    m_Value: 8.182118
+    m_Value: 9.51168
   m_Ortho:
     m_Target: 0
     speed: 2

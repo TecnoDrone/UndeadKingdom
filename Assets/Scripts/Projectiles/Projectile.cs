@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.AI;
+using UnityEngine;
 
 namespace Assets.Scripts.Projectiles
 {
@@ -36,8 +37,11 @@ namespace Assets.Scripts.Projectiles
       //Avoid Exceptions in case the parent gets killed
       if (collision?.transform?.parent == null) return;
 
-      //Avoid arrows to be blocked by allied rigidbodies
-      if (collision.gameObject.layer == LayerMask.NameToLayer(team.ToString())) return;
+      if (!collision.transform.parent.TryGetComponent<Entity>(out var entity)) return;
+
+      //Avoid arrows to be blocked by allied
+      if (entity.team == team) return;
+      //if (collision.gameObject.layer == LayerMask.NameToLayer(team.ToString())) return;
 
       OnHitEffect(collision);
     }

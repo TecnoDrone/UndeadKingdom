@@ -27,7 +27,7 @@ namespace Assets.Scripts.AI.Undead.T1minions
       var direction = target.transform.position - shootingPosition;
       Instantiate(Arrow, shootingPosition, Quaternion.LookRotation(-transform.up, direction))
         .GetComponent<Projectile>()
-        .SetSquad(squad);
+        .SetSquad(team);
     }
   }
 }

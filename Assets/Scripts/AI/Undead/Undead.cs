@@ -13,7 +13,7 @@ namespace Assets.Scripts.AI.Undead
     {
       base.Start();
 
-      squad = Team.Undead;
+      team = Team.Undead;
 
       if (ReanimationClips.Any())
       {
