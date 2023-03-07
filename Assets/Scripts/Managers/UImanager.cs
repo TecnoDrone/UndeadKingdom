@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Player;
-using Assets.Scripts.UI;
+﻿using Assets.Scripts.UI;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,7 +14,6 @@ namespace Assets.Scripts.Managers.UI
 
     public delegate void OnSpellCooldown(string spell, float cooldown);
     public static OnSpellCooldown onSpellCooldown;
-
 
     private void Start()
     {

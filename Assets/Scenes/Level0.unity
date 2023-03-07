@@ -13626,28 +13626,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2f5b10c5ac0536458b65c9c293fef1d, type: 3}
---- !u!1 &667350930 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4624354123887900690, guid: 83f90e719cc99ea4f8f3e7acabfdf60f,
-    type: 3}
-  m_PrefabInstance: {fileID: 1331411353}
-  m_PrefabAsset: {fileID: 0}
---- !u!54 &667350943
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 667350930}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1001 &668351432
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25312,43 +25290,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 239989276, guid: 83f90e719cc99ea4f8f3e7acabfdf60f, type: 3}
-      propertyPath: life
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1030365049, guid: 83f90e719cc99ea4f8f3e7acabfdf60f, type: 3}
-      propertyPath: step
-      value: 0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 1030365049, guid: 83f90e719cc99ea4f8f3e7acabfdf60f, type: 3}
-      propertyPath: damage
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1030365049, guid: 83f90e719cc99ea4f8f3e7acabfdf60f, type: 3}
-      propertyPath: radius
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1030365049, guid: 83f90e719cc99ea4f8f3e7acabfdf60f, type: 3}
-      propertyPath: energyCost
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1030365049, guid: 83f90e719cc99ea4f8f3e7acabfdf60f, type: 3}
-      propertyPath: cooldownTime
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1030365049, guid: 83f90e719cc99ea4f8f3e7acabfdf60f, type: 3}
-      propertyPath: darkFireBall
-      value: 
-      objectReference: {fileID: 4952145786736828823, guid: 98bae6bad3593d24cacd5f9403163e23,
-        type: 3}
-    - target: {fileID: 1030365060, guid: 83f90e719cc99ea4f8f3e7acabfdf60f, type: 3}
-      propertyPath: m_Parameters.colorGradient.atime1
-      value: 52814
-      objectReference: {fileID: 0}
-    - target: {fileID: 1030365060, guid: 83f90e719cc99ea4f8f3e7acabfdf60f, type: 3}
-      propertyPath: m_Parameters.colorGradient.key1.a
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4624354123887900690, guid: 83f90e719cc99ea4f8f3e7acabfdf60f,
         type: 3}
       propertyPath: m_Name
@@ -25372,7 +25313,7 @@ PrefabInstance:
     - target: {fileID: 4624354123887900692, guid: 83f90e719cc99ea4f8f3e7acabfdf60f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.79
+      value: -11.022
       objectReference: {fileID: 0}
     - target: {fileID: 4624354123887900692, guid: 83f90e719cc99ea4f8f3e7acabfdf60f,
         type: 3}
