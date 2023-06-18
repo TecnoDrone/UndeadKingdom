@@ -1,0 +1,18 @@
+{
+  "name": "com.magicsandbox.magictileterrain",
+  "version": "1.5.0",
+  "displayName": "Magic Tile Terrain",
+  "description": "Create Terrains for your low poly or retro style game.",
+  "unity": "2020.3",
+  "unityRelease": "19f1",
+  "documentationUrl": "https://magic-tile-editor.magicsandbox.net",
+  "hideInEditor": false,
+  "keywords": [
+    "MagicSandbox",
+    "MagicTileTerrain"
+  ],
+  "author": {
+    "name": "Magic Sandbox",
+    "email": "support@magicsandbox.com"
+  }
+}

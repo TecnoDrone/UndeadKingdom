@@ -6,8 +6,9 @@ namespace Assets.Scripts.AI
   {
     public Sprite[] deathSprites;
 
-    public override void OnDeath()
+    public override void Death()
     {
+      base.Death();
       var randomRotation = Random.Range(0f, 360f);
 
       var corpse = new GameObject();

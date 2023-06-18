@@ -113,9 +113,9 @@ namespace Assets.Scripts.AI
 
         //mby check all direction and return closest?
         //mby check all direction, but only every second? to make it come realistic and less resource intensive
-        if (Physics.Raycast(transform.position, direction, out RaycastHit hitInfo, viewDistance, whatIsEnemy | whatBlocksVision))
+        if (Physics.Raycast(transform.position, direction, out RaycastHit hitInfo, viewDistance, whatIsEnemy | whatCanBeSeen))
         {
-          if (1 << hitInfo.collider.gameObject.layer == whatBlocksVision)
+          if (1 << hitInfo.collider.gameObject.layer == whatCanBeSeen)
           {
             continue;
           }
@@ -159,7 +159,7 @@ namespace Assets.Scripts.AI
 
       Debug.DrawRay(center, direction, Color.red, 1);
 
-      if (Physics.Raycast(center, direction, out RaycastHit hitInfo, distance, whatBlocksVision))
+      if (Physics.Raycast(center, direction, out RaycastHit hitInfo, distance, whatCanBeSeen))
       {
         opposite = hitInfo.point;
       }

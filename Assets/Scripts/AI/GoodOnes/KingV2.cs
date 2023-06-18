@@ -81,9 +81,9 @@ namespace Assets.Scripts.AI.GoodOnes
 
         Vector3 direction = new(x * viewDistance, 0, z * viewDistance);
 
-        if (Physics.Raycast(transform.position, direction, out RaycastHit hitInfo, viewDistance, whatIsEnemy | whatBlocksVision))
+        if (Physics.Raycast(transform.position, direction, out RaycastHit hitInfo, viewDistance, whatIsEnemy | whatCanBeSeen))
         {
-          if (1 << hitInfo.collider.gameObject.layer == whatBlocksVision)
+          if (1 << hitInfo.collider.gameObject.layer == whatCanBeSeen)
           {
             continue;
           }
@@ -123,7 +123,7 @@ namespace Assets.Scripts.AI.GoodOnes
 
       Debug.DrawRay(center, direction, Color.red, 1);
 
-      if (Physics.Raycast(center, direction, out RaycastHit hitInfo, distance, whatBlocksVision))
+      if (Physics.Raycast(center, direction, out RaycastHit hitInfo, distance, whatCanBeSeen))
       {
         opposite = hitInfo.point;
       }

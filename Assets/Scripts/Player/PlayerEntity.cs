@@ -11,6 +11,15 @@ namespace Assets.Scripts
     public static PlayerEntity Instance { get; private set; }
 
     public static List<Undead> ControlledMinions;
+    public List<Undead> SelectedUnits = new();
+
+    public int keys;
+    public delegate void OnPlayerKeyPickup();
+    public static OnPlayerKeyPickup onPlayerKeyUpdate;
+
+    public int souls;
+    public delegate void OnPlayerSoulsPickup();
+    public static OnPlayerSoulsPickup onPlayerSoulsUpdate;
 
     [HideInInspector]
     public static AudioListener listener;
@@ -53,8 +62,6 @@ namespace Assets.Scripts
 
     public override void TakeDamage(int amount)
     {
-      if (amount == 0) return;
-
       base.TakeDamage(amount);
       onPlayerLifeConsumed?.Invoke(amount);
     }
@@ -77,12 +84,6 @@ namespace Assets.Scripts
       if (life > maxLife) life = maxLife;
 
       onPlayerLifeGained?.Invoke(amount);
-    }
-
-    public override void Death()
-    {
-      base.Death();
-      Camera.main.transform.SetParent(null);
     }
 
     private void Init()

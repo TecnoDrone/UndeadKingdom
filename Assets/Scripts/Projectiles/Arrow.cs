@@ -10,12 +10,15 @@ namespace Assets.Scripts.Projectiles
 
     protected override void OnHitEffect(Collider collision)
     {
-      //Can only hit targets with a entity script attached
-      if (!collision.transform.parent.TryGetComponent<Entity>(out var entity)) return;
 
-      entity.TakeDamage(damage);
-      AudioSource.PlayClipAtPoint(hitSound, transform.position, 0.1f);
+      //Can only hit targets with a entity script attached
+      if (collision.transform.parent != null && collision.transform.parent.TryGetComponent<Entity>(out var entity))
+      {
+        entity.TakeDamage(damage);
+      }
+
       Destroy(gameObject);
+      AudioSource.PlayClipAtPoint(hitSound, transform.position, 0.1f);
     }
   }
 }

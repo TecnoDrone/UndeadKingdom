@@ -15,6 +15,9 @@ public class Entity : MonoBehaviour
   [HideInInspector]
   public bool IsDead => life <= 0;
 
+  public delegate void OnEntityDied(Entity entity);
+  public OnEntityDied onEntityDied;
+
   private float counter; //for visual effect when hit
   private bool restartAnimation; //for visual effect when hit
   private bool isDead;
@@ -59,8 +62,17 @@ public class Entity : MonoBehaviour
     }
   }
 
+  public virtual void LateUpdate()
+  {
+    if(IsDead)
+    {
+      Destroy(gameObject);
+    }
+  }
+
   public virtual void TakeDamage(int amount)
   {
+    if (amount == 0) return;
     life -= amount;
     if (life <= 0 && !isDead)
     {
@@ -95,39 +107,8 @@ public class Entity : MonoBehaviour
   {
     //Play death sound
     //Start death animation
-    GameManager.DeadEntities.Add(this);
     isDead = true;
-    OnDeath();
-  }
-
-  public virtual void OnDeath() { }
-
-  //The entity dies and leave NO corpse on the ground
-  public List<Transform> Disintegrate()
-  {
-    GameManager.DeadEntities.Add(this);
-
-    //Play Disintegrate sound
-    if (disintegrateSoundEffect != null) AudioSource.PlayClipAtPoint(disintegrateSoundEffect, transform.position, 0.1f);
-
-    //Spawn separate pieces
-    List<Transform> bodyparts = null;
-    if (bodypartsContainer != null)
-    {
-      var container = Instantiate(bodypartsContainer, transform.position, transform.rotation);
-      bodyparts = new List<Transform>();
-      foreach (Transform bodypart in container.transform)
-      {
-        bodyparts.Add(bodypart);
-      }
-      container.transform.DetachChildren();
-      Destroy(container);
-    }
-
-    //Destory entity (x_x)
-    if (!isDead) Death();
-
-    return bodyparts;
+    onEntityDied?.Invoke(this);
   }
 
   IEnumerator HealingAnimation()

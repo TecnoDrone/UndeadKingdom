@@ -34,28 +34,32 @@ namespace Assets.Scripts.Projectiles
 
     void OnTriggerEnter(Collider collision)
     {
-      //Avoid Exceptions in case the parent gets killed
-      if (collision?.transform?.parent == null) return;
+      if (collision.tag == "corpse" || collision.tag == "projectile") return;
+      if (collision.gameObject.layer == gameObject.layer) return;
 
-      if (!collision.transform.parent.TryGetComponent<Entity>(out var entity)) return;
-
-      //Avoid arrows to be blocked by allied
-      if (entity.team == team) return;
-      //if (collision.gameObject.layer == LayerMask.NameToLayer(team.ToString())) return;
+      //Do not trigger with team members
+      if (collision.transform.parent != null && collision.transform.parent.TryGetComponent<Entity>(out var entity))
+      {
+        if (entity.team == team) return;
+      }
 
       OnHitEffect(collision);
     }
 
-    public void SetSquad(Team squad)
+    public void SetSquad(Team team)
     {
-      this.team = squad;
-      if (outline == null) return;
+      this.team = team;
 
       switch(this.team)
       {
-        case Team.Undead: outline.color = Color.green; break;
-        case Team.GoodOnes: outline.color = Color.red; break;
+        case Team.Undead:
+          if (outline != null) outline.color = Color.green;
+          break;
+        case Team.GoodOnes:
+          if (outline != null) outline.color = Color.red;
+          break;
       }
+      foreach (Transform child in transform) child.gameObject.layer = gameObject.layer;
     }
   }
 }

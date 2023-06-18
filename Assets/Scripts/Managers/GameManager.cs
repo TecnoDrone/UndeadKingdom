@@ -16,11 +16,6 @@ namespace Assets.Scripts.Managers
 
   public class GameManager : MonoBehaviour
   {
-    public static HashSet<Entity> DeadEntities = new HashSet<Entity>();
-
-    public static Dictionary<EntityAI, Entity> FightersTargets = new Dictionary<EntityAI, Entity>();
-    public static Dictionary<int, Undead> SelectedUnits = new Dictionary<int, Undead>();
-
     public static GameState gameState = GameState.Running;
 
     public Texture2D combatCursor;
@@ -54,49 +49,16 @@ namespace Assets.Scripts.Managers
 
     private void LateUpdate()
     {
-      //Clear dead entities from targets
-      if (FightersTargets.Any())
-      {
-        var deepCopy = FightersTargets.ToDictionary(x => x.Key, x => x.Value);
-        foreach (var (skeleton, target) in deepCopy)
-        {
-          if (DeadEntities.Contains(target))
-          {
-            if (skeleton != null)
-            {
-              skeleton.ResetToDefaultState();
-              skeleton.target = null;
-            }
-
-            FightersTargets.Remove(skeleton);
-          }
-        }
-      }
-
-      //Clear dead entities from selected units
-      if (SelectedUnits.Any())
-      {
-        var deepCopy = SelectedUnits.ToDictionary(x => x.Key, x => x.Value);
-        foreach (var (skeleton, target) in deepCopy)
-        {
-          if (DeadEntities.Contains(target))
-          {
-            SelectedUnits.Remove(skeleton);
-          }
-        }
-      }
-
-      foreach (var entity in DeadEntities)
-      {
-        if (entity.name == "King")
-        {
-          WinGame();
-        }
-
-        Destroy(entity.gameObject);
-      }
-
-      DeadEntities.Clear();
+      //TODO: Remove this and invoke event from King script
+      //foreach (var entity in DeadEntities)
+      //{
+      //  if (entity.name == "King")
+      //  {
+      //    WinGame();
+      //  }
+      //
+      //  Destroy(entity.gameObject);
+      //}
     }
 
     public void ChangeCursor()

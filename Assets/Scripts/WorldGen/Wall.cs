@@ -1,8 +1,14 @@
 using UnityEngine;
 
-public class Wall : MonoBehaviour
+public class Wall
 {
-  public Direction facing = Direction.None;
+  private GameObject goCap;
+  private GameObject goWall;
+
+  public void Apply()
+  {
+
+  }
 }
 
 public enum Direction

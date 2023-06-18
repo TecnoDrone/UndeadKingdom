@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: CapsAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: ed04122b8d13ab64da11a08e23cbeb06, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - ed04122b8d13ab64da11a08e23cbeb06: 250916701
+    - ed04122b8d13ab64da11a08e23cbeb06: 626012270
+    - ed04122b8d13ab64da11a08e23cbeb06: 881669798
+    - ed04122b8d13ab64da11a08e23cbeb06: 1922420785
+    - ed04122b8d13ab64da11a08e23cbeb06: -700642721
+    - ed04122b8d13ab64da11a08e23cbeb06: -752446957
+    - ed04122b8d13ab64da11a08e23cbeb06: -883911341
+    - ed04122b8d13ab64da11a08e23cbeb06: -289910428
+    - ed04122b8d13ab64da11a08e23cbeb06: 1853735914
+    - ed04122b8d13ab64da11a08e23cbeb06: 396684684
+    - ed04122b8d13ab64da11a08e23cbeb06: -646778209
+    - ed04122b8d13ab64da11a08e23cbeb06: 1893137266
+    - ed04122b8d13ab64da11a08e23cbeb06: 1299499884
+    - ed04122b8d13ab64da11a08e23cbeb06: 1427738797
+    - ed04122b8d13ab64da11a08e23cbeb06: -1671204394
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 250916701, guid: ed04122b8d13ab64da11a08e23cbeb06, type: 3}
+  - {fileID: 626012270, guid: ed04122b8d13ab64da11a08e23cbeb06, type: 3}
+  - {fileID: 881669798, guid: ed04122b8d13ab64da11a08e23cbeb06, type: 3}
+  - {fileID: 1922420785, guid: ed04122b8d13ab64da11a08e23cbeb06, type: 3}
+  - {fileID: -700642721, guid: ed04122b8d13ab64da11a08e23cbeb06, type: 3}
+  - {fileID: -752446957, guid: ed04122b8d13ab64da11a08e23cbeb06, type: 3}
+  - {fileID: -883911341, guid: ed04122b8d13ab64da11a08e23cbeb06, type: 3}
+  - {fileID: -289910428, guid: ed04122b8d13ab64da11a08e23cbeb06, type: 3}
+  - {fileID: 1853735914, guid: ed04122b8d13ab64da11a08e23cbeb06, type: 3}
+  - {fileID: 396684684, guid: ed04122b8d13ab64da11a08e23cbeb06, type: 3}
+  - {fileID: -646778209, guid: ed04122b8d13ab64da11a08e23cbeb06, type: 3}
+  - {fileID: 1893137266, guid: ed04122b8d13ab64da11a08e23cbeb06, type: 3}
+  - {fileID: 1299499884, guid: ed04122b8d13ab64da11a08e23cbeb06, type: 3}
+  - {fileID: 1427738797, guid: ed04122b8d13ab64da11a08e23cbeb06, type: 3}
+  - {fileID: -1671204394, guid: ed04122b8d13ab64da11a08e23cbeb06, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - StoneCaps_14
+  - StoneCaps_13
+  - StoneCaps_12
+  - StoneCaps_11
+  - StoneCaps_10
+  - StoneCaps_8
+  - StoneCaps_9
+  - StoneCaps_4
+  - StoneCaps_5
+  - StoneCaps_6
+  - StoneCaps_7
+  - StoneCaps_0
+  - StoneCaps_1
+  - StoneCaps_2
+  - StoneCaps_3
+  m_RenderDataMap: {}
+  m_Tag: CapsAtlas
+  m_IsVariant: 0

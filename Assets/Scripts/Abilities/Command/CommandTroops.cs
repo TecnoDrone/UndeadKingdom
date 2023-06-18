@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Generic;
+﻿using Assets.Scripts.AI.Undead;
+using Assets.Scripts.Generic;
 using Assets.Scripts.Managers;
 using Assets.Scripts.Player;
 using System;
@@ -39,7 +40,7 @@ namespace Assets.Scripts.Spells
     private void Update()
     {
       if (PlayerEntity.Instance.Stance != state) return;
-      if (!GameManager.SelectedUnits.Any()) return;
+      if (!PlayerEntity.Instance.SelectedUnits.Any()) return;
 
       if (Input.GetKeyDown(key))
       {
@@ -111,11 +112,11 @@ namespace Assets.Scripts.Spells
       //check location under mouse and decide one of the following
       //- Attack
       //- Move
-      foreach (var (id, ghost) in Ghosts)
+      foreach (var ghost in Ghosts)
       {
-        var unit = GameManager.SelectedUnits[id];
-        unit.WalkTo(ghost.go.transform.position, speed);
-        Destroy(ghost.go);
+        var unit = PlayerEntity.Instance.SelectedUnits.First(x => x.GetInstanceID() == ghost.Key);
+        unit.WalkTo(ghost.Value.go.transform.position, speed);
+        Destroy(ghost.Value.go);
       }
     }
 
@@ -128,20 +129,20 @@ namespace Assets.Scripts.Spells
       container.transform.position = hit.point;
       var gameobjectHit = hit.transform.gameObject;
 
-      var army = GameManager.SelectedUnits;
+      var army = PlayerEntity.Instance.SelectedUnits;
       if (army == null || !army.Any()) return false;
 
       //Order Divisions regroup by kind
       var groups =
         (from a in army
-         orderby a.Value.order
-         group a by a.Value.Kind into g
+         orderby a.order
+         group a by a.Kind into g
          select
          (
-           Squadron: g.ToDictionary(k => k.Key, k => k.Value),
-           Configuration: Configurations.Get(g.Count(x => x.Value)),
+           Squadron: g.ToDictionary(k => k.GetInstanceID(), k => k),
+           Configuration: Configurations.Get(g.Count(x => x)),
            Direction: g.Key == CreatureKind.UndeadArcher ? -1 : 1,
-           Speed: g.First().Value.originalSpeed
+           Speed: g.First().originalSpeed
          ))
         .ToList();
 
@@ -162,7 +163,7 @@ namespace Assets.Scripts.Spells
 
         //Calculate current division position and calculate the position of each unit from that starting point
         var squadronPosition = new Vector3(container.transform.position.x + xOffset, container.transform.position.y, zStart + zOffset);
-        Debug.DrawLine(squadronPosition, squadronPosition + Vector3.up, Color.red, 10000);
+        //Debug.DrawLine(squadronPosition, squadronPosition + Vector3.up, Color.red, 10000);
         var positions = SquadronService.GetPositions(squadron.Count, squadronPosition, direction);
 
         //Apply position to each ghost

@@ -1,0 +1,18 @@
+{
+    "name": "MagicSandbox.MagicTileTerrain.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:0a4f1176bcc433c4796bb5cf9e98ed51"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

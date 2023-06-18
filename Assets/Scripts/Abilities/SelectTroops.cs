@@ -4,6 +4,8 @@ using Assets.Scripts.AI.Undead;
 using Assets.Scripts.Managers;
 using Assets.Scripts.Player;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /***********************************************************************
@@ -127,9 +129,10 @@ namespace Assets.Scripts.Spells
     {
       if (undead == null) return;
 
-      int id = undead.GetInstanceID();
-      if (GameManager.SelectedUnits.ContainsKey(id)) return;
-      GameManager.SelectedUnits.Add(id, undead);
+      if (PlayerEntity.Instance.SelectedUnits.Contains(undead)) return;
+      PlayerEntity.Instance.SelectedUnits.Add(undead);
+
+      undead.onEntityDied += OnSelectionDeath;
 
       var selection = undead.transform.Find("Selection");
       if (selection != null)
@@ -138,10 +141,14 @@ namespace Assets.Scripts.Spells
       }
     }
 
-    //2023-01-04 e.oliosi - TODO: stop using GameManager, replace with local list of
+    public void OnSelectionDeath(Entity entity)
+    {
+      PlayerEntity.Instance.SelectedUnits.Remove((Undead)entity);
+    }
+
     private void DeselectAll()
     {
-      foreach (var skeleton in GameManager.SelectedUnits.Values)
+      foreach (var skeleton in PlayerEntity.Instance.SelectedUnits)
       {
         if (skeleton == null) continue;
 
@@ -152,16 +159,15 @@ namespace Assets.Scripts.Spells
         }
       }
 
-      GameManager.SelectedUnits.Clear();
+      PlayerEntity.Instance.SelectedUnits.Clear();
     }
 
     private void Deselect(CombatAI skeleton)
     {
       if (skeleton == null) return;
 
-      int id = skeleton.GetInstanceID();
-      if (!GameManager.SelectedUnits.ContainsKey(id)) return;
-      GameManager.SelectedUnits.Remove(id);
+      if (!PlayerEntity.Instance.SelectedUnits.Contains(skeleton)) return;
+      PlayerEntity.Instance.SelectedUnits.Remove((Undead)skeleton);
 
       var selection = skeleton.transform.Find("Selection");
       if (selection != null)
