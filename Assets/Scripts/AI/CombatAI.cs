@@ -18,7 +18,7 @@ namespace Assets.Scripts.AI
       this.onStateChange += ReactToStatusChange;
       lastAttackTime = Time.time;
     }
-
+      
     public override void Update()
     {
       base.Update();
@@ -55,21 +55,38 @@ namespace Assets.Scripts.AI
 
       //Look in attach range
       var hit = Physics.Raycast(rig.worldCenterOfMass, direction, out var hitInfo, attackRange, whatCanBeSeen);
-      //if (hit && log) Debug.Log("I'm seeing: " + hitInfo.collider.transform.parent?.gameObject?.name ?? hitInfo.collider.gameObject.name);
+      if (hit && log) Debug.Log("I'm seeing: " + hitInfo.collider.transform.parent?.gameObject?.name ?? hitInfo.collider.gameObject.name);
 
-      //If what it sees it's the target, fight
-      if (hit && hitInfo.collider.transform?.parent != null && ReferenceEquals(hitInfo.collider.transform.parent.gameObject, target.gameObject))
+      //If something is in front of the entity
+      if (hit && hitInfo.collider.transform?.parent != null)
       {
-        state = State.Fight;
-        onStateChange?.Invoke();
+        var seenTarget = hitInfo.collider.transform.parent.gameObject;
+
+        if(whatIsEnemy == (whatIsEnemy | (1 << seenTarget.layer)))
+        {
+          if (ReferenceEquals(seenTarget, target.gameObject))
+          {
+            if (log) Debug.Log("Fighting: " + target.name);
+            state = State.Fight;
+            onStateChange?.Invoke();
+            return;
+          }
+
+          //It's not my target, but it's blocking the way.
+          //So I decide to switch target  to this one >:}
+          else
+          {
+            if (log) Debug.Log("Changing target: " + seenTarget.name);
+            base.SetTarget(seenTarget.GetComponent<EntityAI>());
+            state = State.Fight;
+            onStateChange?.Invoke();
+            return;
+          }
+        }
       }
-      //Otherwise keep chasing if not already
-      else if (!isWalking)
-      {
-        //if (log) Debug.Log("Start walking...");
-        isWalking = true;
-        WalkTo(target.transform.position);
-      }
+
+      //Keep walking until target is reached or is lost.
+      WalkTo(target.transform.position);
     }
 
     private void ReactToStatusChange()
@@ -78,11 +95,9 @@ namespace Assets.Scripts.AI
       {
         case State.Roam:
           target = null;
-          isWalking = false;
           break;
         case State.Fight:
           agent.ResetPath();
-          isWalking = false;
           break;
         case State.Chase:
           break;

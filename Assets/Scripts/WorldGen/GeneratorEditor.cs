@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEditor;
-using UnityEditorInternal;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Scripts.WorldGen
@@ -8,7 +6,14 @@ namespace Assets.Scripts.WorldGen
   [CustomEditor(typeof(Generator))]
   public class GeneratorEditor : Editor
   {
-    public Sprite[] caps;
+    Generator generator;
+
+    public void OnEnable()
+    {
+      generator = (Generator)target;
+      generator.wallFiller = Resources.Load<GameObject>("WorldGen/Infrastructure/Filler");
+      generator.door = Resources.Load<GameObject>("WorldGen/Infrastructure/Door");
+    }
 
     public override void OnInspectorGUI()
     {
@@ -16,27 +21,34 @@ namespace Assets.Scripts.WorldGen
       var sp = serializedObject.FindProperty("caps");
       EditorGUILayout.PropertyField(sp, true);
 
-      var generator = (Generator)target;
-
       generator.wall = (GameObject)EditorGUILayout.ObjectField("Wall", generator.wall, typeof(GameObject), true);
-      generator.cap = (GameObject)EditorGUILayout.ObjectField("Cap", generator.cap, typeof(GameObject), true);
-      generator.floor = (GameObject)EditorGUILayout.ObjectField("Floor", generator.floor, typeof(GameObject), true);
+      generator.material = (Material)EditorGUILayout.ObjectField("Material", generator.material, typeof(Material), true);
+      generator.tileSprite = (Sprite)EditorGUILayout.ObjectField("Tile", generator.tileSprite, typeof(Sprite), true);
+      generator.wallSprite = (Sprite)EditorGUILayout.ObjectField("WallSprite", generator.wallSprite, typeof(Sprite), true);
+      generator.level = (GameObject)EditorGUILayout.ObjectField("Level", generator.level, typeof(GameObject), true);
 
       EditorGUI.BeginChangeCheck();
       generator.map = (Sprite)EditorGUILayout.ObjectField("Map", generator.map, typeof(Sprite), true);
       if (EditorGUI.EndChangeCheck())
       {
-        generator.matrix = MatrixManager.PixelsToMatrix(generator.map);
-        generator.Generate();
+        UpdateMatrixes();
       }
 
       if(GUILayout.Button("Generate"))
       {
-        generator.matrix = MatrixManager.PixelsToMatrix(generator.map);
-        generator.Generate();
+        UpdateMatrixes();
       }
 
       serializedObject.ApplyModifiedProperties();
+    }
+
+    void UpdateMatrixes()
+    {
+      generator.wallMatrix = MatrixManager.PixelsToWallMatrix(generator.map);
+      generator.floorMatrix = MatrixManager.PixelsToFloorMatrix(generator.map);
+      generator.width = generator.map.texture.width;
+      generator.depth = generator.map.texture.height;
+      generator.GenerateLevel();
     }
   }
 }
