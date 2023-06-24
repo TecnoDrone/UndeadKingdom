@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.AI.Navigation;
-using UnityEditor;
 using UnityEngine;
 
 public class Generator : MonoBehaviour
@@ -128,7 +127,6 @@ public class Generator : MonoBehaviour
           var goWall = Instantiate(this.wall, walls.transform);
           goWall.transform.localPosition = new Vector3(x, 0, z);
           goWall.name = $"Wall_z{z}_x{x}";
-          GameObjectUtility.SetStaticEditorFlags(goWall, StaticEditorFlags.ContributeGI);
 
           //Instantiate a filler which will block light passing through
           var filler = Instantiate(wallFiller, goWall.transform);

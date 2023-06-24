@@ -9924,7 +9924,7 @@ Transform:
   - {fileID: 90864498132626268}
   - {fileID: 1027275362}
   m_Father: {fileID: 0}
-  m_RootOrder: 34
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &5832887029345584502
 Rigidbody:
@@ -10083,15 +10083,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2a1e4a32f2877942a07d6e17b6223af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  life: 10
-  maxLife: 10
-  team: 0
+  life: 15
+  maxLife: 15
+  team: 1
   hurtSoundEffect: {fileID: 8300000, guid: 30dceaf09e8a94543b7cc9774e741691, type: 3}
   spriteRenderer: {fileID: 0}
   log: 0
   whatCanBeSeen:
     serializedVersion: 2
-    m_Bits: 12288
+    m_Bits: 61440
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 57344
@@ -10105,7 +10105,7 @@ MonoBehaviour:
   originalSpeed: 0
   Damage: 1
   attackRange: 1
-  attackSpeed: 1
+  attackSpeed: 0.5
   order: 0
   ReanimationClips:
   - {fileID: 8300000, guid: 7f0656fc7a468144bad6e9b0d83802b2, type: 3}

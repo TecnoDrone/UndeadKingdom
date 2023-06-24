@@ -14,6 +14,7 @@ namespace Assets.Scripts.Projectiles
     public Vector3 destination;
 
     private SpriteRenderer outline;
+    private bool hasHit;
 
     public void Start()
     {
@@ -34,6 +35,7 @@ namespace Assets.Scripts.Projectiles
 
     void OnTriggerEnter(Collider collision)
     {
+      if (hasHit) return;
       if (collision.tag == "corpse" || collision.tag == "projectile") return;
       if (collision.gameObject.layer == gameObject.layer) return;
 
@@ -43,6 +45,7 @@ namespace Assets.Scripts.Projectiles
         if (entity.team == team) return;
       }
 
+      hasHit = true;
       OnHitEffect(collision);
     }
 

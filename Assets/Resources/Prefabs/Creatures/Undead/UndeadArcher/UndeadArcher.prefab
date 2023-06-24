@@ -392,8 +392,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 981bf035a5b54ae4eaadd45117cc9e0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  life: 10
-  maxLife: 10
+  life: 7
+  maxLife: 7
   team: 0
   hurtSoundEffect: {fileID: 8300000, guid: 30dceaf09e8a94543b7cc9774e741691, type: 3}
   spriteRenderer: {fileID: 0}
