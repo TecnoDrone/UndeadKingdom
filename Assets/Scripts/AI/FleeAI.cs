@@ -113,7 +113,7 @@ namespace Assets.Scripts.AI
 
         //mby check all direction and return closest?
         //mby check all direction, but only every second? to make it come realistic and less resource intensive
-        if (Physics.Raycast(transform.position, direction, out RaycastHit hitInfo, viewDistance, whatIsEnemy | whatCanBeSeen))
+        if (Physics.Raycast(transform.position, direction, out RaycastHit hitInfo, viewDistance, whatIsTarget | whatCanBeSeen))
         {
           if (1 << hitInfo.collider.gameObject.layer == whatCanBeSeen)
           {

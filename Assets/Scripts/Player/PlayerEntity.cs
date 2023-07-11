@@ -1,5 +1,7 @@
 ﻿using Assets.Scripts.AI.Undead;
 using Assets.Scripts.Player;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -21,8 +23,9 @@ namespace Assets.Scripts
     public delegate void OnPlayerSoulsPickup();
     public static OnPlayerSoulsPickup onPlayerSoulsUpdate;
 
-    [HideInInspector]
-    public static AudioListener listener;
+    [HideInInspector] public static AudioListener listener;
+    private Animator animator;
+    public Coroutine dying;
 
     public PlayerStance Stance;
     public delegate void OnPlayerStanceChange();
@@ -60,6 +63,36 @@ namespace Assets.Scripts
       }
     }
 
+    public override void OnDeath(Entity entity)
+    {
+      GetComponentInChildren<BoxCollider>().enabled = false;
+      animator.SetInteger("IsDead", 1);
+      audioSource.PlayOneShot(deathSoundEffect, 0.1f);
+
+      State = PlayerState.Dying;
+      onPlayerStateChange?.Invoke(State);
+
+      dying = StartCoroutine(DeathAnimation());
+    }
+
+    IEnumerator DeathAnimation()
+    {
+      while(true)
+      {
+        if(animator.speed != 0)
+        {
+          var currentAnimatorState = animator.GetCurrentAnimatorStateInfo(0);
+          //if animation is over, exit
+          if (currentAnimatorState.normalizedTime >= 1f && currentAnimatorState.IsName("Death"))
+          {
+            animator.speed = 0;
+          }
+        }
+
+        yield return null;
+      }
+    }
+
     public override void TakeDamage(int amount)
     {
       base.TakeDamage(amount);
@@ -92,6 +125,7 @@ namespace Assets.Scripts
       team = Team.Undead;
 
       listener = GetComponent<AudioListener>();
+      animator = GetComponentInChildren<Animator>();
 
       ControlledMinions = new List<Undead>();
       ControlledMinions = FindObjectsOfType<Undead>()?.ToList();

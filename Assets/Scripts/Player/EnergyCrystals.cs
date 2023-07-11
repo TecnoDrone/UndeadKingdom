@@ -1,4 +1,5 @@
 using Assets.Scripts;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -50,12 +51,12 @@ public class EnergyCrystals : MonoBehaviour
     if (amount == 0) return;
     if (crystals.Count == 0) return;
 
-    if (amount > crystals.Count) amount = crystals.Count;
+    amount = Mathf.Min(amount, crystals.Count);
 
     for (int i = 0; i < amount; i++)
     {
-      Destroy(crystals[i]);
-      crystals.RemoveAt(i);
+      Destroy(crystals[0]);
+      crystals.RemoveAt(0);
     }
 
     CircleUtility.ArrangeInCircle(transform.position, radius, crystals);

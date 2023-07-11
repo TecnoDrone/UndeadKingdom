@@ -49,7 +49,7 @@ public class FloorSpike : MonoBehaviour
       if ((spikes.position + distance).y >= maxDistance)
       {
         StopCoroutine(goingUp);
-        goingDown = StartCoroutine(Down());
+        //goingDown = StartCoroutine(Down());
       }
 
       spikes.position += distance;

@@ -9,6 +9,7 @@
   public enum PlayerState
   {
     Idle,
-    Casting
+    Casting,
+    Dying
   }
 }

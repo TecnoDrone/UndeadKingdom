@@ -12,6 +12,7 @@ namespace Assets.Scripts.UI
   {
     public Slider slider;
     public TextMeshProUGUI timer;
+    private RectTransform rectTransform;
 
     public SpellKind spellKind;
     public PlayerStance spellStance;
@@ -23,6 +24,8 @@ namespace Assets.Scripts.UI
 
     private void Start()
     {
+      rectTransform = GetComponent<RectTransform>();
+
       var spellIcon = Resources.Load<Sprite>($"UI/{spellName}");
       transform.Find("Icon").GetComponent<Image>().sprite = spellIcon;
 
@@ -54,12 +57,15 @@ namespace Assets.Scripts.UI
 
     private void Hide()
     {
-      transform.position = new Vector3(transform.position.x, -10, transform.position.z);
+      //transform.position = new Vector3(transform.position.x, -10, transform.position.z);
+      //rectTransform.localPosition = new Vector3(transform.position.x, 100,  transform.position.z);
+      rectTransform.anchoredPosition = new Vector3(0, -60, 0);
     }
 
     private void Show()
     {
-      transform.position = new Vector3(transform.position.x, 48, transform.position.z);
+      //transform.position = new Vector3(transform.position.x, 48, transform.position.z);
+      rectTransform.anchoredPosition = Vector3.zero;  
     }
 
     private void CheckState()

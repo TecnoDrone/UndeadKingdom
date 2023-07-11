@@ -21,5 +21,11 @@ namespace Assets.Scripts.AI.Undead
         audioSource.PlayClipAtPoint(transform.position, randomClip, Random.Range(0.9f, 1.1f), audioSource.volume);
       }
     }
+
+    public override void OnDeath(Entity entity)
+    {
+      base.OnDeath(entity);
+      PlayerEntity.ControlledMinions.Remove(this);
+    }
   }
 }

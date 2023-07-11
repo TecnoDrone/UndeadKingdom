@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 namespace Assets.Scripts.AI
 {
@@ -12,9 +14,13 @@ namespace Assets.Scripts.AI
 
     private float lastAttackTime;
 
+    private Animator animator;
+    public Coroutine dying;
+
     public override void Start()
     {
       base.Start();
+      animator = GetComponentInChildren<Animator>();
       this.onStateChange += ReactToStatusChange;
       lastAttackTime = Time.time;
     }
@@ -30,6 +36,41 @@ namespace Assets.Scripts.AI
       }
     }
 
+    public override void OnDeath(Entity entity)
+    {
+      state = State.Dying;
+      onStateChange?.Invoke();
+
+      GetComponentInChildren<BoxCollider>().enabled = false;
+      animator.SetInteger("IsDead", 1);
+      audioSource.PlayOneShot(deathSoundEffect, 0.2f);
+
+      dying = StartCoroutine(DeathAnimation());
+    }
+
+    IEnumerator DeathAnimation()
+    {
+      while (true)
+      {
+        if (animator.speed != 0)
+        {
+          var currentAnimatorState = animator.GetCurrentAnimatorStateInfo(0);
+          //if animation is over, exit
+          if (currentAnimatorState.normalizedTime >= 1f && currentAnimatorState.IsName("Death"))
+          {
+            animator.speed = 0;
+
+            spriteRenderer.transform.SetParent(null);
+            spriteRenderer.transform.name = "Dead Skeleton";
+            Destroy(animator);
+            Destroy(gameObject);
+          }
+        }
+
+        yield return null;
+      }
+    }
+
     public override void SetTarget(Entity target)
     {
       base.SetTarget(target);
@@ -40,7 +81,7 @@ namespace Assets.Scripts.AI
     private void Chase()
     {
       //if (log) Debug.Log("Chasing...");
-      var distance = Vector3.Distance(rig.worldCenterOfMass, target.transform.position);
+      var distance = Vector3.Distance(center, target.transform.position);
       if (distance >= viewDistance)
       {
         target = null;
@@ -50,11 +91,11 @@ namespace Assets.Scripts.AI
       }
 
       //if (log) Debug.Log("Target in view.");
-      var heading = target.transform.position - rig.worldCenterOfMass;
+      var heading = target.center - center;
       var direction = (heading / heading.magnitude) * viewDistance;
 
       //Look in attach range
-      var hit = Physics.Raycast(rig.worldCenterOfMass, direction, out var hitInfo, attackRange, whatCanBeSeen);
+      var hit = Physics.Raycast(center, direction, out var hitInfo, attackRange, whatCanBeSeen);
       if (hit && log) Debug.Log("I'm seeing: " + hitInfo.collider.transform.parent?.gameObject?.name ?? hitInfo.collider.gameObject.name);
 
       //If something is in front of the entity
@@ -62,7 +103,7 @@ namespace Assets.Scripts.AI
       {
         var seenTarget = hitInfo.collider.transform.parent.gameObject;
 
-        if(whatIsEnemy == (whatIsEnemy | (1 << seenTarget.layer)))
+        if(whatIsTarget == (whatIsTarget | (1 << seenTarget.layer)))
         {
           if (ReferenceEquals(seenTarget, target.gameObject))
           {
@@ -101,6 +142,10 @@ namespace Assets.Scripts.AI
           break;
         case State.Chase:
           break;
+        case State.Dying:
+          target = null;
+          agent.ResetPath();
+          break;
       }
     }
 
@@ -120,10 +165,10 @@ namespace Assets.Scripts.AI
       //this way you can remove agent.ResetPath()
 
       //Check if target is still in attack range
-      var heading = target.transform.position - rig.worldCenterOfMass;
+      var heading = target.center - center;
       var direction = (heading / heading.magnitude) * viewDistance;
 
-      var hit = Physics.Raycast(rig.worldCenterOfMass, direction, out var hitInfo, attackRange, whatCanBeSeen);
+      var hit = Physics.Raycast(center, direction, out var hitInfo, attackRange, whatCanBeSeen);
 
       //No hit means the target is too far away to be attacked
       if (!hit || hitInfo.collider.transform.parent == null)

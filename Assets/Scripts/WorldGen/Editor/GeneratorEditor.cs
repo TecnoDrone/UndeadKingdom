@@ -31,21 +31,20 @@ namespace Assets.Scripts.WorldGen
       generator.map = (Sprite)EditorGUILayout.ObjectField("Map", generator.map, typeof(Sprite), true);
       if (EditorGUI.EndChangeCheck())
       {
-        UpdateMatrixes();
+        UpdateMatrix();
       }
 
       if(GUILayout.Button("Generate"))
       {
-        UpdateMatrixes();
+        UpdateMatrix();
       }
 
       serializedObject.ApplyModifiedProperties();
     }
 
-    void UpdateMatrixes()
+    void UpdateMatrix()
     {
-      generator.wallMatrix = MatrixManager.PixelsToWallMatrix(generator.map);
-      generator.floorMatrix = MatrixManager.PixelsToFloorMatrix(generator.map);
+      generator.matrix = MatrixManager.PixelsToMatrix(generator.map);
       generator.width = generator.map.texture.width;
       generator.depth = generator.map.texture.height;
       generator.GenerateLevel();

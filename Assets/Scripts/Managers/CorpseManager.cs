@@ -43,6 +43,7 @@ namespace Assets.Scripts.Managers
     Archer,
     Knight,
     UndeadArcher,
-    UndeadKnight
+    UndeadKnight,
+    Cultist
   }
 }

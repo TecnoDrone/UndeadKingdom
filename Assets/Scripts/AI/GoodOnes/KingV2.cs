@@ -81,7 +81,7 @@ namespace Assets.Scripts.AI.GoodOnes
 
         Vector3 direction = new(x * viewDistance, 0, z * viewDistance);
 
-        if (Physics.Raycast(transform.position, direction, out RaycastHit hitInfo, viewDistance, whatIsEnemy | whatCanBeSeen))
+        if (Physics.Raycast(transform.position, direction, out RaycastHit hitInfo, viewDistance, whatIsTarget | whatCanBeSeen))
         {
           if (1 << hitInfo.collider.gameObject.layer == whatCanBeSeen)
           {

@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts;
+using Assets.Scripts.AI.Undead;
 using Assets.Scripts.Managers;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,34 +19,46 @@ public class Entity : MonoBehaviour
   public delegate void OnEntityDied(Entity entity);
   public OnEntityDied onEntityDied;
 
+  public delegate void OnLifeChanged();
+  public OnLifeChanged onLifeChanged;
+
   private float counter; //for visual effect when hit
   private bool restartAnimation; //for visual effect when hit
   private bool isDead;
   private Color originalColor; //for visual effect when hit
 
+  internal Vector3 center => new Vector3(
+    transform.position.x,
+    transform.position.y + 0.25f,
+    transform.position.z - 0.5f
+  );
+
   //Death variables
-  private AudioClip deathSoundEffect;
-  private AudioClip disintegrateSoundEffect;
+  public AudioClip deathSoundEffect;
   public AudioClip hurtSoundEffect;
-  private GameObject bodypartsContainer;
 
   [HideInInspector]
   public SpriteRenderer spriteRenderer;
   protected AudioSource audioSource;
   private float defaultPitch;
 
+  private float healingTime;
+
   public virtual void Start()
   {
     spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     audioSource = GetComponent<AudioSource>();
 
-    audioSource = gameObject.GetComponent<AudioSource>();
+    healingTime = Time.time;
+
     audioSource.clip = hurtSoundEffect;
     defaultPitch = audioSource.pitch;
 
     originalColor = spriteRenderer.material.color;
 
-    if (life == 0) Death();
+    onEntityDied += OnDeath;
+
+    if (life == 0) onEntityDied?.Invoke(this);
   }
 
   public virtual void Update()
@@ -62,28 +75,28 @@ public class Entity : MonoBehaviour
     }
   }
 
-  public virtual void LateUpdate()
-  {
-    if(IsDead)
-    {
-      Destroy(gameObject);
-    }
-  }
+  public virtual void OnDeath(Entity entity) => Destroy(entity);
 
   public virtual void TakeDamage(int amount)
   {
     if (amount == 0) return;
+    if (isDead) return;
+
     life -= amount;
-    if (life <= 0 && !isDead)
+    life = Mathf.Max(life, 0);
+    onLifeChanged?.Invoke();
+
+    if (life <= 0)
     {
-      Death();
+      isDead = true;  
+      onEntityDied?.Invoke(this);
       return;
     }
 
     if (audioSource != null)
     {
       audioSource.pitch = defaultPitch + Random.Range(-0.05f, 0.05f);
-      audioSource.PlayOneShot(hurtSoundEffect);
+      audioSource.PlayOneShot(hurtSoundEffect, 0.1f);
     }
 
     restartAnimation = true;
@@ -96,27 +109,28 @@ public class Entity : MonoBehaviour
 
     life += amount;
     if (life > maxLife) life = maxLife;
+    onLifeChanged?.Invoke();
 
+    healingTime = Time.time;
     StartCoroutine(HealingAnimation());
 
     return true;
   }
 
-  //The entity dies and leave a corpse on the ground
-  public virtual void Death()
-  {
-    //Play death sound
-    //Start death animation
-    isDead = true;
-    onEntityDied?.Invoke(this);
-  }
-
   IEnumerator HealingAnimation()
   {
-    spriteRenderer.material.SetFloat("_Healing", 1);
+    while(true)
+    {
+      if(Time.time <= healingTime + 1)
+      {
+        spriteRenderer.material.SetFloat("_Healing", 1);
+      }
+      else
+      {
+        spriteRenderer.material.SetFloat("_Healing", 0);
+      }
 
-    yield return new WaitForSeconds(1);
-
-    spriteRenderer.material.SetFloat("_Healing", 0);
+      yield return null;
+    }
   }
 }

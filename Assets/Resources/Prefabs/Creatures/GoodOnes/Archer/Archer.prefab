@@ -63,6 +63,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2523311068658420802}
   - component: {fileID: 2523311068658420813}
+  - component: {fileID: 871088364915914202}
   m_Layer: 13
   m_Name: Sprite
   m_TagString: Untagged
@@ -137,6 +138,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 2
   m_SpriteSortPoint: 0
+--- !u!95 &871088364915914202
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2523311068658420803}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 92f40ce57cf1c4148a24a8c480a41b17, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2523311068701546645
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,7 +196,7 @@ Transform:
   - {fileID: 2523311068510145441}
   - {fileID: 5928638482798681042}
   m_Father: {fileID: 0}
-  m_RootOrder: 34
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &2523311068701546646
 Rigidbody:
@@ -336,13 +358,14 @@ MonoBehaviour:
   life: 5
   maxLife: 5
   team: 0
+  deathSoundEffect: {fileID: 8300000, guid: 3fa791a97d3ead742bff5d68f073f149, type: 3}
   hurtSoundEffect: {fileID: 8300000, guid: 0d253a58675af3b4083dda24610e29eb, type: 3}
   spriteRenderer: {fileID: 0}
   log: 0
   whatCanBeSeen:
     serializedVersion: 2
     m_Bits: 4672
-  whatIsEnemy:
+  whatIsTarget:
     serializedVersion: 2
     m_Bits: 576
   state: 0

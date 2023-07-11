@@ -1,6 +1,4 @@
 ﻿using Assets.Scripts.Managers;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,7 +9,7 @@ namespace Assets.Scripts.AI
     public bool log;
 
     public LayerMask whatCanBeSeen;
-    public LayerMask whatIsEnemy;
+    public LayerMask whatIsTarget;
     public State state;
 
     public CreatureKind Kind;
@@ -29,7 +27,6 @@ namespace Assets.Scripts.AI
     [HideInInspector]
     public Sprite sprite;
 
-    protected Rigidbody rig;
     protected NavMeshAgent agent;
 
     //Used to prevent SetPosition multiple times
@@ -42,12 +39,13 @@ namespace Assets.Scripts.AI
     public delegate void OnStateChange();
     public OnStateChange onStateChange;
 
+    public SearchStrategy searchStrategy;
+
     public override void Start()
     {
       base.Start();
 
       agent = GetComponent<NavMeshAgent>();
-      rig = GetComponent<Rigidbody>();
       spriteRenderer = GetComponentInChildren<SpriteRenderer>();
       if (spriteRenderer != null) sprite = spriteRenderer.sprite;
 
@@ -55,12 +53,15 @@ namespace Assets.Scripts.AI
       anchorPosition = transform.position;
       roamingPosition = GetNextPosition(viewDistance);
       originalSpeed = agent.speed;
+
+      searchStrategy = new SearchStrategy(whatIsTarget, viewDistance);
     }
 
     // Update is called once per frame
     public override void Update()
     {
       base.Update();
+      if (state == State.Dying) return;
 
       if (state != State.Roam && target == null)
       {
@@ -73,11 +74,11 @@ namespace Assets.Scripts.AI
       }
     }
 
-    public override void Death()
+    public override void OnDeath(Entity entity)
     {
-      base.Death();
       var corspe = CorpseManager.GetRandomCorspe(team, Kind);
       Instantiate(corspe, transform.position, corspe.transform.rotation);
+      Destroy(gameObject);
     }
 
     protected virtual void Roam()
@@ -127,8 +128,6 @@ namespace Assets.Scripts.AI
       //return startingPosition + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized * viewDistance;
       if (distance == 0) return null;
 
-      var center = transform.position;
-
       var nextPosition = anchorPosition + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized * distance;
       var heading = center - nextPosition;
       var direction = (heading / heading.magnitude) * distance;
@@ -146,31 +145,38 @@ namespace Assets.Scripts.AI
       if (target != null) return false;
 
       var center = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
+      var entity = searchStrategy.SearchTarget(center);
+      if (entity == null) return false;
 
-      var possibleTargets = Physics.OverlapSphere(center, viewDistance, whatIsEnemy);
-      if (possibleTargets == null || possibleTargets.Length == 0) return false;
-
-      //Check if targets in range are hidden by walls
-      var visibleTargets = new List<Collider>();
-      foreach (var possibleTarget in possibleTargets)
-      {
-        if (!possibleTarget.transform.parent.TryGetComponent<Entity>(out var e)) continue;
-
-        var heading = possibleTarget.transform.position - center;
-        var direction = (heading / heading.magnitude) * viewDistance;
-        
-        var hit = Physics.Raycast(center, direction, out var hitInfo, viewDistance, whatCanBeSeen);
-        if (!hit) continue;
-
-        var isVisible = hitInfo.collider.gameObject.GetInstanceID() == possibleTarget.gameObject.GetInstanceID();
-        if (isVisible) visibleTargets.Add(possibleTarget);
-      }
-      if (visibleTargets == null || visibleTargets.Count == 0) return false;
-
-      var distances = visibleTargets.Select(hit => (hit, distance: Vector3.Distance(hit.transform.position, transform.position))).OrderBy(x => x.distance);
-      var entity = distances.First().hit.GetComponentInParent<Entity>();
       SetTarget(entity);
       return true;
+
+      //var center = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
+
+      //var possibleTargets = Physics.OverlapSphere(center, viewDistance, whatIsTarget);
+      //if (possibleTargets == null || possibleTargets.Length == 0) return false;
+
+      ////Check if targets in range are hidden by walls
+      //var visibleTargets = new List<Collider>();
+      //foreach (var possibleTarget in possibleTargets)
+      //{
+      //  if (!possibleTarget.transform.parent.TryGetComponent<Entity>(out var e)) continue;
+
+      //  var heading = possibleTarget.transform.position - center;
+      //  var direction = (heading / heading.magnitude) * viewDistance;
+
+      //  var hit = Physics.Raycast(center, direction, out var hitInfo, viewDistance, whatCanBeSeen);
+      //  if (!hit) continue;
+
+      //  var isVisible = hitInfo.collider.gameObject.GetInstanceID() == possibleTarget.gameObject.GetInstanceID();
+      //  if (isVisible) visibleTargets.Add(possibleTarget);
+      //}
+      //if (visibleTargets == null || visibleTargets.Count == 0) return false;
+
+      //var distances = visibleTargets.Select(hit => (hit, distance: Vector3.Distance(hit.transform.position, transform.position))).OrderBy(x => x.distance);
+      //var entity = distances.First().hit.GetComponentInParent<Entity>();
+      //SetTarget(entity);
+      //return true;
     }
 
     //Reset to default state. TODO: remove and use onStateChange?.Invoke();
@@ -194,6 +200,7 @@ namespace Assets.Scripts.AI
 
     public virtual void SetTarget(Entity target)
     {
+      if (target == null) return;
       target.onEntityDied += ClearTarget;
       this.target = target;
     }
@@ -201,7 +208,11 @@ namespace Assets.Scripts.AI
     public void ClearTarget(Entity entity)
     {
       target = null;
-      if(agent != null) agent.isStopped = false;
+      if (agent != null)
+      {
+        agent.isStopped = false;
+        agent.ResetPath();
+      }
     }
 
     public enum State
@@ -209,7 +220,8 @@ namespace Assets.Scripts.AI
       Roam,
       Chase,
       Fight,
-      Flee
+      Flee,
+      Dying
     }
 
     public void OnDrawGizmos()

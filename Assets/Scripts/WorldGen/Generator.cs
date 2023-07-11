@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Generator : MonoBehaviour
 {
@@ -18,73 +19,67 @@ public class Generator : MonoBehaviour
   public GameObject level;
   public Sprite map;
 
-  public int[][] wallMatrix;
-  public int[][] floorMatrix;
+  public Tile[][] matrix;
 
   public int width;
   public int depth;
 
-  public void Start()
-  {
-
-  }
+  private RuleSet ruleSet;
+  private GameObject floor;
+  private GameObject walls;
 
   public void GenerateLevel()
   {
-    if (wallMatrix == null) return;
+    if (matrix == null) return;
     if (caps.Length < 14) throw new ArgumentException("Missing caps.");
 
-    var walls = level.transform.Find("Walls");
-    if (walls != null) DestroyImmediate(walls.gameObject);
-    GenerateWalls();
+    CleanUp();
 
-    var floor = level.transform.Find("Floor");
-    if (floor != null) DestroyImmediate(floor.gameObject);
-    GenerateFloor();
-  }
-
-  public void GenerateFloor()
-  {
-    var floor = new GameObject("Floor");
+    floor = new GameObject("Floor");
     floor.transform.SetParent(level.transform);
-    floor.transform.position = new Vector3(
-      floor.transform.position.x,
-      floor.transform.position.y,
-      floor.transform.position.z + 0.5f);
+    floor.transform.position = new Vector3(floor.transform.position.x, floor.transform.position.y, floor.transform.position.z + 0.5f);
 
-    for (int z = 0; z < floorMatrix.Length; z++)
+    walls = new GameObject("Walls");
+    walls.transform.SetParent(level.transform);
+
+    //Assign each sprite to its ruleset. Ruleset it's hardcoded so the sprite order is very important.
+    ruleSet = new RuleSet();
+    for (int i = 0; i < caps.Length; ruleSet.caps[i].sprite = caps[i], i++) ;
+
+    for (int z = 0; z < matrix.Length; z++)
     {
-      var row = floorMatrix[z];
+      var row = matrix[z];
       for (int x = 0; x < row.Length; x++)
       {
         if (row[x] == 0) continue;
 
-        //Place a Tile
-        if (row[x] == 1)
+        switch (row[x])
         {
-          PlaceTile(floor, x, z);
-        }
-
-        //Place a Tile and a Door
-        else if (row[x] == 2)
-        {
-          PlaceTile(floor, x, z);
-
-          //Create door
-          var goDoor = Instantiate(door, floor.transform);
-          goDoor.name = "Door";
-          goDoor.transform.localPosition = new Vector3(x, 0, z);
+          case Tile.Floor: PlaceTile(x, z); break;
+          case Tile.Door: PlaceDoor(x, z); break;
+          case Tile.Wall: PlaceWall(x, z); break;
         }
       }
     }
 
+    UpdateNavmesh();
+  }
+
+  public void CleanUp()
+  {
+    if (walls != null) DestroyImmediate(walls.gameObject);
+    if (floor != null) DestroyImmediate(floor.gameObject);
+  }
+
+  public void UpdateNavmesh()
+  {
     var nms = floor.AddComponent<NavMeshSurface>();
     nms.useGeometry = UnityEngine.AI.NavMeshCollectGeometry.PhysicsColliders;
     nms.layerMask = 1 << LayerMask.NameToLayer("Ground");
     nms.BuildNavMesh();
   }
 
-  public void PlaceTile(GameObject floor, float x, float z)
+  public void PlaceTile(int x, int z)
   {
     var tileRotation = Quaternion.Euler(new Vector3(90f, 0f, 0f));
 
@@ -95,6 +90,7 @@ public class Generator : MonoBehaviour
     var sr = tile.AddComponent<SpriteRenderer>();
     sr.sprite = tileSprite;
     sr.material = material;
+    sr.sortingOrder = -1;
     sr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
 
     var bx = tile.AddComponent<BoxCollider>();
@@ -105,129 +101,142 @@ public class Generator : MonoBehaviour
     tile.transform.localPosition = new Vector3(x, 0, z);
   }
 
+  public void PlaceDoor(int x, int z)
+  {
+    PlaceTile(x, z);
+    var goDoor = Instantiate(door, floor.transform);
+    goDoor.name = "Door";
+    goDoor.transform.localPosition = new Vector3(x, 0, z);
+  }
+
   //Todo merge walls
   //Todo dont create walls under caps
-  public void GenerateWalls()
+  public void PlaceWall(int x, int z)
   {
-    var walls = new GameObject("Walls");
-    walls.transform.SetParent(level.transform);
+    var name = $"Wall_z{z}_x{x}";
 
-    for (int z = 0; z < wallMatrix.Length; z++)
+    //If below there should be a wall, do not place a wall here.
+    //This is to prevent generating a wall that will not be visible
+    //because of the caps.
+    if (z > 0 && matrix[z - 1][x] != Tile.Wall)
     {
-      var row = wallMatrix[z];
-      for (int x = 0; x < row.Length; x++)
-      {
-        if (row[x] == 0) continue;
+      var goWall = Instantiate(this.wall, walls.transform);
+      goWall.transform.localPosition = new Vector3(x, 0, z);
+      goWall.name = name;
 
-        //If below there should be a wall, do not place a wall here.
-        //This is to prevent generating a wall that will not be visible
-        //because of the caps.
-        if (z > 0 && wallMatrix[z - 1][x] == 0)
-        {
-          var goWall = Instantiate(this.wall, walls.transform);
-          goWall.transform.localPosition = new Vector3(x, 0, z);
-          goWall.name = $"Wall_z{z}_x{x}";
-
-          //Instantiate a filler which will block light passing through
-          var filler = Instantiate(wallFiller, goWall.transform);
-          filler.name = "Filler";
-        }
-
-        //Place a vertical wall, will be hidden under the cap but...
-        //collisioin detection and light will still work
-        else
-        {
-          var filler = GameObject.CreatePrimitive(PrimitiveType.Cube);
-          filler.name = $"hWall_z{z}_x{x}";
-          filler.transform.SetParent(walls.transform);
-          filler.transform.localPosition = new Vector3(x, 0, z + 0.5f);
-          filler.transform.localScale = new Vector3(1, 2, 1);
-          filler.layer = LayerMask.NameToLayer("Wall");
-          filler.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
-        }
-
-
-        //Assign each sprite to its ruleset. Ruleset it's hardcoded so the sprite order is very important.
-        var ruleSet = new RuleSet();
-        for (int i = 0; i < caps.Length; ruleSet.caps[i].sprite = caps[i], i++) ;
-
-        //Define the directions of the current pixel 
-        Cap capToSpawn = null;
-        var nw = z == wallMatrix.Length - 1 || x == 0 ? 1 : wallMatrix[z + 1][x - 1];
-        var n = z == wallMatrix.Length - 1 ? 1 : wallMatrix[z + 1][x];
-        var ne = x == row.Length - 1 || z == wallMatrix.Length - 1 ? 1 : wallMatrix[z + 1][x + 1];
-        var e = x == row.Length - 1 ? 1 : wallMatrix[z][x + 1];
-        var w = x == 0 ? 1 : wallMatrix[z][x - 1];
-        var se = z == 0 || x == row.Length - 1 ? 1 : wallMatrix[z - 1][x + 1];
-        var s = z == 0 ? 1 : wallMatrix[z - 1][x];
-        var sw = x == 0 || z == 0 ? 1 : wallMatrix[z - 1][x - 1];
-
-        var neighbors = nw + n + ne + e + w + se + s + sw;
-
-        //Try to find the correct cap with the correct rotation.
-        //When found, exit the loop.
-        var possibleCaps = ruleSet.caps.Where(c => c.neighbors <= neighbors).OrderByDescending(x => x.neighbors).ToList();
-        foreach (var possibleCap in possibleCaps)
-        {
-          foreach (var rotation in new float[] { 0f, 90f, 180f, 270f })
-          {
-            //Shift the directions array depending on the current rotation.
-            var shiftAmount = (int)rotation / 45;
-            var directions = new Queue<Directions>(Enum.GetValues(typeof(Directions)).Cast<Directions>());
-            for (int i = 0; i < shiftAmount; i++)
-            {
-              directions.Dequeue();
-              directions.Enqueue((Directions)i);
-            }
-
-            //Compare matrix direction with rotated cap directions.
-            var matches = 0;
-
-            var rotatedDirs = directions.ToArray();
-            //foreach (var dir in Enum.GetValues(typeof(Directions)))
-            //{
-            //  var currRotatedDir = rotatedDirs[(int)dir];
-            //  if (!cap.rules.ContainsKey(currRotatedDir)) continue;
-            //
-            //  if (cap.rules[currRotatedDir]) ...
-            //}
-            if (nw == 1 && possibleCap.rules.ContainsKey(rotatedDirs[0]) && possibleCap.rules[rotatedDirs[0]] == true) matches++;
-            if (n == 1 && possibleCap.rules.ContainsKey(rotatedDirs[1]) && possibleCap.rules[rotatedDirs[1]] == true) matches++;
-            if (ne == 1 && possibleCap.rules.ContainsKey(rotatedDirs[2]) && possibleCap.rules[rotatedDirs[2]] == true) matches++;
-            if (e == 1 && possibleCap.rules.ContainsKey(rotatedDirs[3]) && possibleCap.rules[rotatedDirs[3]] == true) matches++;
-            if (se == 1 && possibleCap.rules.ContainsKey(rotatedDirs[4]) && possibleCap.rules[rotatedDirs[4]] == true) matches++;
-            if (s == 1 && possibleCap.rules.ContainsKey(rotatedDirs[5]) && possibleCap.rules[rotatedDirs[5]] == true) matches++;
-            if (sw == 1 && possibleCap.rules.ContainsKey(rotatedDirs[6]) && possibleCap.rules[rotatedDirs[6]] == true) matches++;
-            if (w == 1 && possibleCap.rules.ContainsKey(rotatedDirs[7]) && possibleCap.rules[rotatedDirs[7]] == true) matches++;
-
-            //If all directions match, it's the right cap.
-            if (matches == possibleCap.neighbors)
-            {
-              capToSpawn = possibleCap;
-              capToSpawn.rotation = rotation * -1;
-              break;
-            }
-          }
-
-          if (capToSpawn != null) break;
-        }
-
-        //var capOffset = new Vector3(x - 0.5f, 0.5f, z + 0.3f);
-        var capRotation = Quaternion.Euler(new Vector3(90f, capToSpawn.rotation, 0f));
-
-        var cap = new GameObject();
-        cap.name = "Cap";
-        cap.transform.position = new Vector3(x, 0.5f, z + 1.35f);
-        cap.transform.rotation = capRotation;
-
-        var sr = cap.AddComponent<SpriteRenderer>();
-        sr.sprite = capToSpawn.sprite;
-        sr.material = material;
-        sr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
-
-        cap.transform.SetParent(walls.transform);
-      }
+      //Instantiate a filler which will block light passing through
+      var filler = Instantiate(wallFiller, goWall.transform);
+      filler.name = "Filler";
     }
+
+    //Place a vertical wall which is not visible and will only cast shadows.
+    //collision detection and light will still work
+    else
+    {
+      var filler = GameObject.CreatePrimitive(PrimitiveType.Cube);
+      filler.name = $"h{name}";
+      filler.transform.SetParent(walls.transform);
+      filler.transform.localPosition = new Vector3(x, 0, z + 0.5f);
+      filler.transform.localScale = new Vector3(1, 2, 1);
+      filler.layer = LayerMask.NameToLayer("Wall");
+      filler.GetComponent<MeshRenderer>().shadowCastingMode = ShadowCastingMode.ShadowsOnly;
+    }
+
+    PlaceCap(x, z);
+  }
+
+  public void PlaceCap(int x, int z)
+  {
+    Tile nw, n, ne, e, w, se, s, sw;
+
+    bool atRowStart = x == 0;
+    bool atRowEnd = x == width - 1;
+
+    bool atColumnStart = z == 0;
+    bool atColumnEnd = z == depth - 1;
+
+    n = atColumnEnd ? Tile.Wall : matrix[z + 1][x];
+    w = atRowStart ? Tile.Wall : matrix[z][x - 1];
+    e = atRowEnd ? Tile.Wall : matrix[z][x + 1];
+    s = atColumnStart ? Tile.Wall : matrix[z - 1][x]; 
+    nw = atColumnEnd || atRowStart ? Tile.Wall : matrix[z + 1][x - 1];
+    sw = atColumnStart || atRowStart ? Tile.Wall : matrix[z - 1][x - 1];
+    ne = atRowEnd || atColumnEnd ? Tile.Wall : matrix[z + 1][x + 1];
+    se = atColumnStart || atRowEnd ? Tile.Wall : matrix[z - 1][x + 1];
+
+    //Define the directions of the current pixel 
+    Cap capToSpawn = null;
+    //var nw = z == matrix.Length - 1 || x == 0 ? 1 : matrix[z + 1][x - 1];
+    //var n = z == matrix.Length - 1 ? 1 : matrix[z + 1][x];
+    //var ne = x == width - 1 || z == matrix.Length - 1 ? 1 : matrix[z + 1][x + 1];
+    //var e = x == width - 1 ? 1 : matrix[z][x + 1];
+    //var w = x == 0 ? 1 : matrix[z][x - 1];
+    //var se = z == 0 || x == width - 1 ? 1 : matrix[z - 1][x + 1];
+    //var s = z == 0 ? 1 : matrix[z - 1][x];
+    //var sw = x == 0 || z == 0 ? 1 : matrix[z - 1][x - 1];
+
+    var neighbors = new Tile[] { nw, n, ne, e, w, se, s, sw }.Count(tile => tile == Tile.Wall);
+
+    //Try to find the correct cap with the correct rotation.
+    //When found, exit the loop.
+    var possibleCaps = ruleSet.caps.Where(c => c.neighbors <= neighbors).OrderByDescending(x => x.neighbors).ToList();
+    foreach (var possibleCap in possibleCaps)
+    {
+      foreach (var rotation in new float[] { 0f, 90f, 180f, 270f })
+      {
+        //Shift the directions array depending on the current rotation.
+        var shiftAmount = (int)rotation / 45;
+        var directions = new Queue<Directions>(Enum.GetValues(typeof(Directions)).Cast<Directions>());
+        for (int i = 0; i < shiftAmount; i++)
+        {
+          directions.Dequeue();
+          directions.Enqueue((Directions)i);
+        }
+
+        //Compare matrix direction with rotated cap directions.
+        var matches = 0;
+
+        var rotatedDirs = directions.ToArray();
+        //foreach (var dir in Enum.GetValues(typeof(Directions)))
+        //{
+        //  var currRotatedDir = rotatedDirs[(int)dir];
+        //  if (!cap.rules.ContainsKey(currRotatedDir)) continue;
+        //
+        //  if (cap.rules[currRotatedDir]) ...
+        //}
+        if (nw == Tile.Wall && possibleCap.rules.ContainsKey(rotatedDirs[0]) && possibleCap.rules[rotatedDirs[0]] == true) matches++;
+        if (n == Tile.Wall && possibleCap.rules.ContainsKey(rotatedDirs[1]) && possibleCap.rules[rotatedDirs[1]] == true) matches++;
+        if (ne == Tile.Wall && possibleCap.rules.ContainsKey(rotatedDirs[2]) && possibleCap.rules[rotatedDirs[2]] == true) matches++;
+        if (e == Tile.Wall && possibleCap.rules.ContainsKey(rotatedDirs[3]) && possibleCap.rules[rotatedDirs[3]] == true) matches++;
+        if (se == Tile.Wall && possibleCap.rules.ContainsKey(rotatedDirs[4]) && possibleCap.rules[rotatedDirs[4]] == true) matches++;
+        if (s == Tile.Wall && possibleCap.rules.ContainsKey(rotatedDirs[5]) && possibleCap.rules[rotatedDirs[5]] == true) matches++;
+        if (sw == Tile.Wall && possibleCap.rules.ContainsKey(rotatedDirs[6]) && possibleCap.rules[rotatedDirs[6]] == true) matches++;
+        if (w == Tile.Wall && possibleCap.rules.ContainsKey(rotatedDirs[7]) && possibleCap.rules[rotatedDirs[7]] == true) matches++;
+
+        //If all directions match, it's the right cap.
+        if (matches == possibleCap.neighbors)
+        {
+          capToSpawn = possibleCap;
+          capToSpawn.rotation = rotation * -1;
+          break;
+        }
+      }
+
+      if (capToSpawn != null) break;
+    }
+
+    //var capOffset = new Vector3(x - 0.5f, 0.5f, z + 0.3f);
+    var capRotation = Quaternion.Euler(new Vector3(90f, capToSpawn.rotation, 0f));
+
+    var cap = new GameObject("Cap");
+    cap.transform.SetPositionAndRotation(new Vector3(x, 0.5f, z + 1.35f), capRotation);
+
+    var sr = cap.AddComponent<SpriteRenderer>();
+    sr.sprite = capToSpawn.sprite;
+    sr.material = material;
+    sr.shadowCastingMode = ShadowCastingMode.On;
+
+    cap.transform.SetParent(walls.transform);
   }
 
   class RuleSet

@@ -46,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
     {
       case PlayerState.Idle: CanMove = true; break;
       case PlayerState.Casting: CanMove = false; break;
+      case PlayerState.Dying: CanMove = false; break;
     }
   }
 }
